@@ -5,7 +5,6 @@
   const slides = Array.from(hero.querySelectorAll('.hero-slide'));
   const controls = hero.querySelector('.hero-controls');
   const pagination = Array.from(hero.querySelectorAll('[data-slide]'));
-  const playback = hero.querySelector('.hero-playback');
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let current = 0;
   let paused = motionPreference.matches;
@@ -27,7 +26,6 @@
   function scheduleSlide() {
     window.clearTimeout(timer);
     timer = null;
-    playback.textContent = paused ? '再生' : '一時停止';
     hero.querySelector('.hero-slides').setAttribute('aria-live', paused ? 'polite' : 'off');
     if (paused || document.hidden || hero.matches(':hover') || hero.contains(document.activeElement)) return;
     timer = window.setTimeout(() => {
@@ -41,10 +39,6 @@
       showSlide(Number(button.dataset.slide));
       scheduleSlide();
     });
-  });
-  playback.addEventListener('click', () => {
-    paused = !paused;
-    scheduleSlide();
   });
   hero.addEventListener('mouseenter', scheduleSlide);
   hero.addEventListener('mouseleave', scheduleSlide);
