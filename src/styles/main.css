@@ -16,8 +16,9 @@ main { flex: 1; }
 ::view-transition-group(page-content) { animation: none; }
 ::view-transition-new(page-content) { animation-delay: 300ms; animation-fill-mode: both; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 24px 0; }
-.brand { flex-shrink: 0; font-size: 20px; font-weight: 500; letter-spacing: .1em; text-decoration: none; }
-.header nav { display: flex; gap: 28px; font-size: 12px; letter-spacing: .1em; }
+.brand { display: block; min-width: 0; text-decoration: none; }
+.brand img { width: auto; height: 20px; object-fit: contain; object-position: left center; }
+.header nav { display: flex; flex-shrink: 0; gap: 28px; font-size: 12px; letter-spacing: .1em; }
 .header nav a { text-decoration: none; }
 .header nav a[aria-current] { text-decoration: underline; }
 .skip-link { position: absolute; top: 8px; left: 8px; padding: 8px 16px; background: #fff; z-index: 2; transform: translateY(-160%); }
@@ -129,6 +130,6 @@ dd { margin: 0; }
 .work-body img { max-width: 100%; }
 .project-summary { font-size: 16px; }
 .project-facts { font-size: 13px; }
-.project-facts > div { display: flex; gap: 20px; }
-.project-facts dt { flex-shrink: 0; }
+.project-facts > div { display: flex; }
+.project-facts dt { flex-shrink: 0; font-weight: 400; }
 .profile h1 { font-size: clamp(18px, 3vw, 24px); line-height: 1.8; }

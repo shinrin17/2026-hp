@@ -10,7 +10,7 @@ const { data } = Astro.props.work;
   <h1>{data.title}</h1>
   <p class="client"><time datetime={data.publishedAt}>{data.publishedAt.slice(0, 10).replaceAll('-', '.')}</time></p>
   {(data.role || data.client) && <dl class="project-facts">
-    {data.role && <div><dt>担当</dt><dd>{data.role}</dd></div>}
+    {data.role && <div><dt>担当：</dt><dd>{data.role}</dd></div>}
     {data.client && <div><dt>クライアント</dt><dd>{data.client}</dd></div>}
   </dl>}
 </header>
