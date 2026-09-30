@@ -37,7 +37,6 @@ h3 { font-size: 16px; font-weight: 500; }
 .hero-pagination button { display: grid; place-items: center; width: 32px; height: 32px; border: 0; padding: 0; background: transparent; cursor: pointer; }
 .hero-pagination button::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
 .hero-pagination button[aria-pressed="true"]::before { background: #191919; }
-.hero-playback { border: 0; padding: 6px; background: transparent; color: #666; font: inherit; font-size: 11px; cursor: pointer; }
 .hero-controls button:focus-visible { outline: 2px solid #191919; outline-offset: 3px; }
 .role-nav { display: flex; flex-wrap: wrap; gap: 16px 28px; padding-block: 28px; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: .08em; }
 .works-filters button { appearance: none; border: 0; border-bottom: 1px solid transparent; border-radius: 0; padding: 6px 0; background: transparent; color: #666; font: inherit; letter-spacing: inherit; cursor: pointer; }
@@ -84,7 +83,7 @@ dd { margin: 0; }
   .philosophy { padding-block: 36px 28px; }
   .hero-image { aspect-ratio: 4 / 5; }
   .hero-slide figcaption { font-size: 12px; }
-  .works-grid { --works-columns: 1; --works-gap: 36px; }
+  .works-grid { --works-columns: 2; --works-gap: 16px; }
   .profile { grid-template-columns: 1fr; gap: 24px; }
   .timeline > div { grid-template-columns: 1fr; gap: 8px; }
   .footer { margin-top: 56px; }

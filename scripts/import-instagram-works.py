@@ -155,12 +155,13 @@ def build(entries):
         gallery = '\n'.join(f'<img src="{i["file"]}" width="{i["width"]}" height="{i["height"]}" alt="{e} — {n+1}" loading="{"eager" if n==0 else "lazy"}">' for n,i in enumerate(p['images']))
         labels = ' / '.join(LABELS[c] for c in p['categories'])
         date = p['publishedAt'][:10]
+        source_label = p.get('sourceLabel', 'Instagramで元の投稿を見る')
         body = f'''    <p class="back-link"><a href="../../works.html#{p['id']}">← 作品一覧へ戻る</a></p>
     <article class="project">
       <header class="project-heading"><p class="eyebrow">{labels}</p><h1>{e}</h1><p class="client"><time datetime="{p['publishedAt']}">{date.replace('-','.')}</time></p></header>
       <div class="project-detail">
         <div class="gallery" aria-label="作品の写真">{gallery}</div>
-        <div class="description"><div class="instagram-caption">{escape(clean_display_text(p['caption']))}</div><p class="source-link"><a href="{p['source']}" target="_blank" rel="noopener noreferrer">Instagramで元の投稿を見る ↗</a></p></div>
+        <div class="description"><div class="instagram-caption">{escape(clean_display_text(p['caption']))}</div><p class="source-link"><a href="{p['source']}" target="_blank" rel="noopener noreferrer">{escape(source_label)} ↗</a></p></div>
       </div>
     </article>'''
         (ROOT/'works'/p['folder']/'index.html').write_text(document(display_title,body,'../../'))

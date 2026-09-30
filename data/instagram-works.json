@@ -217,6 +217,26 @@
       "folder": "柏木由紀 「シアワセ記念日」MusicVideo"
     },
     {
+      "id": "youtube-4HfAH746QJo",
+      "title": "櫻坂46『Lonesome rabbit』 MUSIC VIDEO",
+      "categories": [
+        "production-staff"
+      ],
+      "publishedAt": "2026-05-19T00:00:00+09:00",
+      "source": "https://www.youtube.com/watch?v=4HfAH746QJo",
+      "sourceLabel": "YouTubeでMUSIC VIDEOを見る",
+      "caption": "【PA work】\n制作進行として携わらせていただきました",
+      "images": [
+        {
+          "file": "img/01.jpg",
+          "width": 1280,
+          "height": 720,
+          "cover": false
+        }
+      ],
+      "folder": "櫻坂46『Lonesome rabbit』 MUSIC VIDEO"
+    },
+    {
       "id": "instagram-DYMbnz-CX-M",
       "title": "大森元貴『催し』 Behind the Song & the Scenes",
       "categories": [
