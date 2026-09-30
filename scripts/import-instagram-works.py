@@ -8,10 +8,30 @@ import re
 import shutil
 import struct
 import subprocess
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 LABELS = {'photo': 'PHOTO', 'movie': 'MOVIE', 'production-staff': 'PRODUCTION STAFF'}
+
+def clean_display_text(text):
+    text = re.sub(r'[@＠][\w.]+', '', text)
+    text = re.sub(r'[#＃][\w]+', '', text)
+    text = re.sub(r'[0-9#*]\ufe0f?\u20e3', '', text)
+    text = re.sub(r'[\U0001F000-\U0001FAFF\u2600-\u27BF\u2300-\u23FF\u200d\ufe0e\ufe0f\u20e3]', '', text)
+    text = '\n'.join(re.sub(r'[ \t\u3000]+', ' ', line).strip() for line in text.splitlines())
+    return re.sub(r'\n{3,}', '\n\n', text).strip()
+
+def assign_folders(entries):
+    used = set()
+    for p in entries:
+        name = p['title'].replace('/', '／')
+        folder = name
+        number = 2
+        while folder in used:
+            folder = f'{name}（{number}）'
+            number += 1
+        used.add(folder)
+        p['folder'] = folder
 
 def dimensions(path):
     with path.open('rb') as f:
@@ -103,9 +123,11 @@ def import_export(path):
     for p in rows.values():
         shortcode = p['url'].rstrip('/').split('/')[-1]
         slug = 'instagram-'+shortcode
-        folder = ROOT/'works'/slug/'img'
-        folder.mkdir(parents=True, exist_ok=True)
         caption = p.get('detailCaption') or p['caption']
+        entry = {'title': TITLE_OVERRIDES.get(shortcode, title(caption))}
+        assign_folders([*entries, entry])
+        folder = ROOT/'works'/entry['folder']/'img'
+        folder.mkdir(parents=True, exist_ok=True)
         media = []
         seen = set()
         for f in p['files']:
@@ -121,14 +143,15 @@ def import_export(path):
             media.append({'file':f'img/{name}', 'width':width, 'height':height, 'cover':f.get('cover',False)})
         if not media: raise ValueError(f'No image: {p["url"]}')
         date = datetime.fromisoformat(p['date'].replace('Z','+00:00')).astimezone(timezone(timedelta(hours=9))).isoformat()
-        entries.append({'id':slug, 'title':TITLE_OVERRIDES.get(shortcode, title(caption)), 'categories':categories(caption), 'publishedAt':date, 'source':p['url'], 'caption':caption, 'images':media})
+        entries.append({'id':slug, 'folder':entry['folder'], 'title':entry['title'], 'categories':categories(caption), 'publishedAt':date, 'source':p['url'], 'caption':caption, 'images':media})
     entries.sort(key=lambda p:p['publishedAt'],reverse=True)
     (ROOT/'data'/'instagram-works.json').write_text(json.dumps({'account':'m_ichirinka','retrievedOn':'2026-09-30','posts':entries},ensure_ascii=False,indent=2)+'\n')
     return entries
 
 def build(entries):
     for p in entries:
-        e = escape(p['title'])
+        display_title = clean_display_text(p['title'])
+        e = escape(display_title)
         gallery = '\n'.join(f'<img src="{i["file"]}" width="{i["width"]}" height="{i["height"]}" alt="{e} — {n+1}" loading="{"eager" if n==0 else "lazy"}">' for n,i in enumerate(p['images']))
         labels = ' / '.join(LABELS[c] for c in p['categories'])
         date = p['publishedAt'][:10]
@@ -137,15 +160,15 @@ def build(entries):
       <header class="project-heading"><p class="eyebrow">{labels}</p><h1>{e}</h1><p class="client"><time datetime="{p['publishedAt']}">{date.replace('-','.')}</time></p></header>
       <div class="project-detail">
         <div class="gallery" aria-label="作品の写真">{gallery}</div>
-        <div class="description"><div class="instagram-caption">{escape(p['caption'])}</div><p class="source-link"><a href="{p['source']}" target="_blank" rel="noopener noreferrer">Instagramで元の投稿を見る ↗</a></p></div>
+        <div class="description"><div class="instagram-caption">{escape(clean_display_text(p['caption']))}</div><p class="source-link"><a href="{p['source']}" target="_blank" rel="noopener noreferrer">Instagramで元の投稿を見る ↗</a></p></div>
       </div>
     </article>'''
-        (ROOT/'works'/p['id']/'index.html').write_text(document(p['title'],body,'../../'))
+        (ROOT/'works'/p['folder']/'index.html').write_text(document(display_title,body,'../../'))
     cards=[]
     for p in entries:
         i = p['images'][0]
         cards.append(f'''      <article class="work" id="{p['id']}" data-category="{' '.join(p['categories'])}" data-date="{p['publishedAt'][:10]}">
-        <a href="works/{p['id']}/index.html"><img class="work-image" src="works/{p['id']}/{i['file']}" alt="{escape(p['title'])}" width="{i['width']}" height="{i['height']}" loading="lazy"></a>
+        <a href="works/{quote(p['folder'], safe='')}/index.html"><img class="work-image" src="works/{quote(p['folder'], safe='')}/{i['file']}" alt="{escape(p['title'])}" width="{i['width']}" height="{i['height']}" loading="lazy"></a>
       </article>''')
     buttons = '\n'.join(f'      <button type="button" data-filter="{c}" aria-pressed="{"true" if c=="all" else "false"}" aria-controls="works-results">{label}</button>' for c,label in [('all','ALL'),*LABELS.items()])
     body = f'''    <div class="role-nav works-filters" role="group" aria-label="作品のカテゴリで絞り込み">
