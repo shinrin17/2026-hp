@@ -61,7 +61,7 @@
     let count = 0;
 
     works.forEach((work) => {
-      work.hidden = category !== 'all' && work.dataset.category !== category;
+      work.hidden = category !== 'all' && !work.dataset.category.split(' ').includes(category);
       if (!work.hidden) count += 1;
     });
 
@@ -82,6 +82,9 @@
   function revealLinkedWork() {
     const hash = window.location.hash.slice(1);
     const categories = {
+      photo: 'photo',
+      movie: 'movie',
+      'production-staff': 'production-staff',
       photography: 'photo',
       directing: 'movie',
       production: 'production-staff',
@@ -96,7 +99,7 @@
     const target = document.getElementById(hash);
     const work = target?.closest('.work');
     if (work?.hidden) {
-      filterWorks(work.dataset.category);
+      filterWorks(work.dataset.category.split(' ')[0]);
       target.scrollIntoView();
     }
   }

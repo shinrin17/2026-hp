@@ -18,13 +18,27 @@ h3 { font-size: 16px; font-weight: 500; }
 .header nav a[aria-current] { text-decoration: underline; }
 .skip-link { position: absolute; top: 8px; left: 8px; padding: 8px 16px; background: #fff; z-index: 2; transform: translateY(-160%); }
 .skip-link:focus { transform: none; }
-.hero { padding-top: 48px; }
 .eyebrow { color: #666; font-size: 11px; letter-spacing: .1em; }
-.hero-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.hero-pair > a { position: relative; text-decoration: none; }
-.hero-pair img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-.hero-pair > a > span { position: absolute; left: 24px; bottom: 24px; color: white; font-size: clamp(16px, 2.5vw, 24px); }
-.hero-pair .eyebrow { display: block; margin-top: 8px; color: #ddd; }
+.philosophy { padding-block: 56px 40px; text-align: center; }
+.philosophy h1 { margin-bottom: 16px; font-weight: 400; }
+.philosophy p { margin: 0; font-size: clamp(17px, 2.3vw, 27px); letter-spacing: .06em; line-height: 1.8; text-wrap: balance; }
+.hero { width: min(840px, 100%); margin-inline: auto; }
+.hero-slides { display: grid; }
+.hero-slide { grid-area: 1 / 1; min-width: 0; opacity: 0; visibility: hidden; pointer-events: none; text-decoration: none; transition: opacity 1.2s ease-in-out, visibility 0s 1.2s; }
+.hero-slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.hero-slide:hover { opacity: 1; }
+.hero-slide figure { margin: 0; }
+.hero-image { aspect-ratio: 16 / 10; }
+.hero-image img { width: 100%; height: 100%; object-fit: contain; }
+.hero-slide figcaption { display: grid; gap: 6px; padding-top: 20px; text-align: center; font-size: 13px; }
+.hero-controls { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 16px; }
+.hero-controls[hidden] { display: none; }
+.hero-pagination { display: flex; gap: 4px; }
+.hero-pagination button { display: grid; place-items: center; width: 32px; height: 32px; border: 0; padding: 0; background: transparent; cursor: pointer; }
+.hero-pagination button::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
+.hero-pagination button[aria-pressed="true"]::before { background: #191919; }
+.hero-playback { border: 0; padding: 6px; background: transparent; color: #666; font: inherit; font-size: 11px; cursor: pointer; }
+.hero-controls button:focus-visible { outline: 2px solid #191919; outline-offset: 3px; }
 .role-nav { display: flex; flex-wrap: wrap; gap: 16px 28px; padding-block: 28px; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: .08em; }
 .works-filters button { appearance: none; border: 0; border-bottom: 1px solid transparent; border-radius: 0; padding: 6px 0; background: transparent; color: #666; font: inherit; letter-spacing: inherit; cursor: pointer; }
 .works-filters button:hover { color: #191919; }
@@ -67,11 +81,9 @@ dd { margin: 0; }
   .header { flex-direction: column; align-items: flex-start; gap: 20px; padding-block: 24px; }
   .header nav { width: 100%; justify-content: space-between; gap: 16px; }
   .brand img { width: 220px; }
-  .hero { padding-top: 32px; }
-  .hero-pair { gap: 12px; }
-  .hero-pair img { aspect-ratio: 3 / 4; }
-  .hero-pair > a > span { left: 12px; bottom: 16px; font-size: 14px; }
-  .hero-pair .eyebrow { font-size: 9px; letter-spacing: 0; }
+  .philosophy { padding-block: 36px 28px; }
+  .hero-image { aspect-ratio: 4 / 5; }
+  .hero-slide figcaption { font-size: 12px; }
   .works-grid { --works-columns: 1; --works-gap: 36px; }
   .profile { grid-template-columns: 1fr; gap: 24px; }
   .timeline > div { grid-template-columns: 1fr; gap: 8px; }
@@ -79,6 +91,7 @@ dd { margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .hero-slide { transition: none; }
 }
 
 .back-link { margin-top: 32px; font-size: 12px; }
@@ -87,3 +100,8 @@ dd { margin: 0; }
 .project-detail { overflow-wrap: anywhere; }
 .project-detail .description { max-width: 720px; margin-top: 40px; }
 .project .gallery { gap: 24px; }
+
+.project-heading { margin-block: 40px 32px; }
+.project-heading h1 { max-width: 800px; font-size: clamp(20px, 3.5vw, 32px); line-height: 1.5; }
+.instagram-caption { white-space: pre-wrap; overflow-wrap: anywhere; }
+.source-link { margin-top: 32px; font-size: 12px; }
