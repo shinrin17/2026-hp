@@ -1,0 +1,30 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import WorkHeading from './WorkHeading.astro';
+import WorkGallery from './WorkGallery.astro';
+import WorkDescription from './WorkDescription.astro';
+import { getImages, workHref } from '../../lib/works';
+import { categoryLabels, siteInfo } from '../../config/site';
+import { workDescription, workData } from '../../lib/seo';
+
+interface Props { work: CollectionEntry<'works'> }
+const { work } = Astro.props;
+const { data } = work;
+const { Content } = await render(work);
+const images = await getImages(work);
+const path = workHref(work.data.slug);
+const categories = data.categories.map((category) => categoryLabels[category]);
+const description = workDescription(data);
+const structuredData = workData(Astro.site!, data, images);
+---
+<SiteLayout title={`${data.title} | ${siteInfo.name}`} description={description} path={path} section="works" openGraph={{ type: 'article', publishedTime: data.publishedAt, tags: categories }} structuredData={structuredData}>
+  <p class="back-link"><a href={`/works/#${data.slug}`}>← WORKS</a></p>
+  <article class="project">
+    <WorkHeading work={work} />
+    <div class="project-detail">
+      <WorkGallery images={images} />
+      <WorkDescription summary={data.summary} source={data.source} sourceLabel={data.sourceLabel}><Content /></WorkDescription>
+    </div>
+  </article>
+</SiteLayout>

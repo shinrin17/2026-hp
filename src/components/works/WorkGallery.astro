@@ -1,0 +1,12 @@
+---
+import type { WorkImage } from '../../lib/works';
+interface Props { images: WorkImage[] }
+const { images } = Astro.props;
+---
+<!-- 編集元: index.md の images。並び順 = 表示順、先頭 = 一覧サムネイル -->
+<div class="gallery" aria-label="作品の写真">
+  {images.map((image, index) => <figure>
+    <img src={image.src} width={image.width} height={image.height} alt={image.alt} loading={index === 0 ? 'eager' : 'lazy'} />
+    {image.caption && <figcaption>{image.caption}</figcaption>}
+  </figure>)}
+</div>

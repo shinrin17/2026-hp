@@ -1,0 +1,20 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getWorks, getCoverImage, workHref } from '../lib/works';
+import { categoryLabels, siteInfo } from '../config/site';
+import { collectionData } from '../lib/seo';
+const works = await getWorks();
+const cards = await Promise.all(works.map(async (work) => ({ work, image: await getCoverImage(work) })));
+---
+<SiteLayout title={`作品一覧 | ${siteInfo.name}`} description="森川亮太が携わった写真・映像作品の一覧。アーティスト写真、MV、CM、ドラマ、メイキングなどの実績を、PHOTO・MOVIE・PRODUCTION STAFFのカテゴリ別に紹介します。" path="/works/" section="works" structuredData={collectionData(Astro.site!, works.map((work) => work.data))}>
+  <h1 class="visually-hidden">作品一覧</h1>
+  <div class="role-nav works-filters" role="group" aria-label="作品のカテゴリで絞り込み">
+    {Object.entries({ all: 'ALL', ...categoryLabels }).map(([category, label]) => <button type="button" data-filter={category} aria-pressed={category === 'all' ? 'true' : 'false'} aria-controls="works-results">{label}</button>)}
+  </div>
+  <div id="works-results" class="works-grid">
+    {cards.map(({ work, image }) => <article class="work" id={work.data.slug} data-category={work.data.categories.join(' ')} data-date={work.data.publishedAt.slice(0, 10)}>
+      <a href={workHref(work.data.slug)} aria-label={work.data.title}><img class="work-image" src={image.src} alt={image.alt} width={image.width} height={image.height} style={`aspect-ratio: ${image.width} / ${image.height}`} loading="lazy" decoding="async" /></a>
+    </article>)}
+  </div>
+</SiteLayout>
+<script src="../scripts/works-filter.js"></script>

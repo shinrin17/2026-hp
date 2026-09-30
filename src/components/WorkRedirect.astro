@@ -1,0 +1,22 @@
+---
+interface Props { title: string; target: string }
+const { title, target } = Astro.props;
+const canonical = new URL(target, Astro.site!);
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — ページを移動しました</title>
+    <link rel="canonical" href={canonical} />
+    <!-- Static GitHub Pages cannot set an HTTP 301 per page. Use an immediate redirect. -->
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+  </head>
+  <body>
+    <main>
+      <h1>{title}</h1>
+      <p>作品ページのURLが変わりました。<a href={target}>新しい作品ページを開く</a></p>
+    </main>
+  </body>
+</html>

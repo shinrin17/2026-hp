@@ -1,0 +1,9 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Hero from '../components/Hero.astro';
+import { siteInfo } from '../config/site';
+---
+<SiteLayout title={`${siteInfo.name} | 写真・映像ポートフォリオ`} path="/" section="home">
+  <h1 class="home-statement">表現者の持つ熱量と尊さを残すクリエイター</h1>
+  <Hero />
+</SiteLayout>

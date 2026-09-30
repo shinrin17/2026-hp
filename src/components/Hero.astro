@@ -1,0 +1,27 @@
+---
+import { featuredWorkIds, categoryLabels } from '../config/site';
+import { getWorks, getCoverImage, workHref } from '../lib/works';
+const works = await getWorks();
+const slides = await Promise.all(featuredWorkIds.map(async (id) => {
+  const work = works.find((entry) => entry.data.workId === id);
+  if (!work) throw new Error(`トップページの代表作が見つかりません: ${id}`);
+  return { work, image: await getCoverImage(work) };
+}));
+const tallestImageRatio = Math.min(...slides.map(({ image }) => image.width / image.height));
+---
+<section class="hero" style={`--hero-image-ratio: ${tallestImageRatio}`} aria-label="代表作" aria-roledescription="カルーセル">
+  <div class="hero-slides" aria-live="off">
+    {slides.map(({ work, image }, index) => <a class:list={['hero-slide', { 'is-active': index === 0 }]} href={workHref(work.data.slug)} aria-label={`${index + 1} / ${slides.length}：${work.data.title}`} aria-hidden={index === 0 ? undefined : 'true'} inert={index > 0}>
+      <figure>
+        <div class="hero-image"><img src={image.src} width={image.width} height={image.height} alt={image.alt} fetchpriority={index === 0 ? 'high' : undefined} /></div>
+        <figcaption><span class="eyebrow">{work.data.categories.map((category) => categoryLabels[category]).join(' / ')}</span><span>{work.data.title}</span></figcaption>
+      </figure>
+    </a>)}
+  </div>
+  <div class="hero-controls" hidden>
+    <div class="hero-pagination" role="group" aria-label="代表作の切り替え">
+      {slides.map((_, index) => <button type="button" data-slide={index} aria-label={`代表作${index + 1}を表示`} aria-pressed={index === 0 ? 'true' : 'false'}></button>)}
+    </div>
+  </div>
+</section>
+<script src="../scripts/hero-slideshow.js"></script>
