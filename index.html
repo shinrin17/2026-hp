@@ -6,6 +6,7 @@
   <title>森川亮太 | MORIKAWA RYOTA</title>
   <meta name="description" content="森川亮太のポートフォリオ。写真撮影、映像演出、制作進行。">
   <link rel="stylesheet" href="css/main.css">
+  <script src="js/hero-slideshow.js" defer></script>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">本文へスキップ</a>
@@ -14,10 +15,38 @@
     <nav aria-label="メインナビゲーション"><a href="works.html">WORKS</a><a href="about.html">ABOUT</a></nav>
   </header>
   <main id="main">
-    <section class="hero" aria-label="作品紹介">
-      <div class="hero-pair">
-        <a href="works.html#photography"><img src="assets/images/hero-left.svg" width="1000" height="1350" alt="写真作品のビジュアル"><span>光と影の輪郭<span class="eyebrow">PHOTOGRAPHY</span></span></a>
-        <a href="works.html#directing"><img src="assets/images/hero-right.svg" width="1000" height="1350" alt="映像作品のビジュアル"><span>物語を紡ぐ視線<span class="eyebrow">DIRECTING &amp; PRODUCTION</span></span></a>
+    <section class="philosophy" aria-labelledby="philosophy-title">
+      <h1 id="philosophy-title" class="eyebrow">PHILOSOPHY</h1>
+      <p>表現者の持つ熱量と尊さを残すクリエイター</p>
+    </section>
+    <section class="hero" aria-label="代表作" aria-roledescription="カルーセル">
+      <div class="hero-slides" aria-live="off">
+        <a class="hero-slide is-active" href="works/instagram-C_QJO0fJ_Z3/index.html" aria-label="1 / 3：ミステリーピューロランド — 大鶴肥満 緋色のウェディング">
+          <figure>
+            <div class="hero-image"><img src="works/instagram-C_QJO0fJ_Z3/img/01.jpg" width="1920" height="1440" alt="ミステリーピューロランド — 大鶴肥満 緋色のウェディング" fetchpriority="high"></div>
+            <figcaption><span class="eyebrow">PHOTO</span><span>ミステリーピューロランド — 大鶴肥満 緋色のウェディング</span></figcaption>
+          </figure>
+        </a>
+        <a class="hero-slide" href="works/instagram-DYMbnz-CX-M/index.html" aria-label="2 / 3：大森元貴『催し』 Behind the Song &amp; the Scenes" aria-hidden="true" inert>
+          <figure>
+            <div class="hero-image"><img src="works/instagram-DYMbnz-CX-M/img/01.jpg" width="1440" height="810" alt="大森元貴『催し』 Behind the Song &amp; the Scenes"></div>
+            <figcaption><span class="eyebrow">MOVIE</span><span>大森元貴『催し』 Behind the Song &amp; the Scenes</span></figcaption>
+          </figure>
+        </a>
+        <a class="hero-slide" href="works/instagram-DZkZ7EkCSRh/index.html" aria-label="3 / 3：柏木由紀 「シアワセ記念日」MusicVideo" aria-hidden="true" inert>
+          <figure>
+            <div class="hero-image"><img src="works/instagram-DZkZ7EkCSRh/img/01.jpg" width="1080" height="607" alt="柏木由紀 「シアワセ記念日」MusicVideo"></div>
+            <figcaption><span class="eyebrow">PRODUCTION STAFF</span><span>柏木由紀 「シアワセ記念日」MusicVideo</span></figcaption>
+          </figure>
+        </a>
+      </div>
+      <div class="hero-controls" hidden>
+        <div class="hero-pagination" role="group" aria-label="代表作の切り替え">
+          <button type="button" data-slide="0" aria-label="代表作1を表示" aria-pressed="true"></button>
+          <button type="button" data-slide="1" aria-label="代表作2を表示" aria-pressed="false"></button>
+          <button type="button" data-slide="2" aria-label="代表作3を表示" aria-pressed="false"></button>
+        </div>
+        <button class="hero-playback" type="button">一時停止</button>
       </div>
     </section>
   </main>
