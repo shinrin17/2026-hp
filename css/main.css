@@ -19,21 +19,25 @@ h3 { font-size: 16px; font-weight: 500; }
 .skip-link { position: absolute; top: 8px; left: 8px; padding: 8px 16px; background: #fff; z-index: 2; transform: translateY(-160%); }
 .skip-link:focus { transform: none; }
 .hero { padding-top: 48px; }
-.hero-heading { margin-bottom: 32px; }
-.hero-heading h1 { font-size: clamp(22px, 3.5vw, 40px); }
-.hero-heading p, .eyebrow { color: #666; font-size: 11px; letter-spacing: .1em; }
+.eyebrow { color: #666; font-size: 11px; letter-spacing: .1em; }
 .hero-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .hero-pair > a { position: relative; text-decoration: none; }
 .hero-pair img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
 .hero-pair > a > span { position: absolute; left: 24px; bottom: 24px; color: white; font-size: clamp(16px, 2.5vw, 24px); }
 .hero-pair .eyebrow { display: block; margin-top: 8px; color: #ddd; }
 .role-nav { display: flex; flex-wrap: wrap; gap: 16px 28px; padding-block: 28px; border-bottom: 1px solid #e5e5e5; font-size: 11px; letter-spacing: .08em; }
-.works-section { padding-top: 56px; }
-.works-section > h2 { margin-bottom: 28px; }
-.works-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 40px 24px; }
-.work-image { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin-bottom: 16px; background: #f3f3f3; }
-.work h3 { margin-bottom: 8px; }
-.work .eyebrow { margin-bottom: 8px; }
+.works-filters button { appearance: none; border: 0; border-bottom: 1px solid transparent; border-radius: 0; padding: 6px 0; background: transparent; color: #666; font: inherit; letter-spacing: inherit; cursor: pointer; }
+.works-filters button:hover { color: #191919; }
+.works-filters button[aria-pressed="true"] { color: #191919; border-bottom-color: currentColor; }
+.works-filters button:focus-visible { outline: 2px solid #191919; outline-offset: 5px; }
+.filter-status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+#works-results { margin-top: 56px; }
+#works-results .work[hidden] { display: none; }
+.works-grid { --works-columns: 3; --works-gap: 24px; display: grid; grid-template-columns: repeat(var(--works-columns), minmax(0, 1fr)); align-items: start; gap: var(--works-gap); }
+.works-grid.is-masonry { display: block; position: relative; }
+.works-grid.is-masonry > .work { position: absolute; top: 0; left: 0; }
+.work > a { display: block; }
+.work-image { width: 100%; height: auto; background: #f3f3f3; }
 .client { font-size: 12px; color: #666; }
 dl { margin: 0 0 20px; }
 dl > div { margin-bottom: 12px; }
@@ -41,7 +45,8 @@ dt { font-weight: 600; }
 dd { margin: 0; }
 .gallery { display: grid; gap: 12px; }
 .gallery img { width: 100%; }
-.page-heading { padding-block: 64px 40px; }
+.about-portrait { max-width: 960px; margin: 0 0 32px; }
+.about-portrait img { width: 100%; }
 .profile { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; max-width: 960px; }
 .profile h3 { margin-top: 24px; }
 .profile h3:first-child { margin-top: 0; }
@@ -54,7 +59,7 @@ dd { margin: 0; }
 .social-links { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 40px; font-size: 12px; letter-spacing: .1em; }
 .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 80px; padding-block: 24px; border-top: 1px solid #ddd; font-size: 11px; color: #666; }
 @media (max-width: 900px) {
-  .works-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .works-grid { --works-columns: 2; }
   .services { grid-template-columns: 1fr; gap: 16px; }
 }
 @media (max-width: 600px) {
@@ -67,22 +72,18 @@ dd { margin: 0; }
   .hero-pair img { aspect-ratio: 3 / 4; }
   .hero-pair > a > span { left: 12px; bottom: 16px; font-size: 14px; }
   .hero-pair .eyebrow { font-size: 9px; letter-spacing: 0; }
-  .works-grid { grid-template-columns: 1fr; gap: 36px; }
+  .works-grid { --works-columns: 1; --works-gap: 36px; }
   .profile { grid-template-columns: 1fr; gap: 24px; }
   .timeline > div { grid-template-columns: 1fr; gap: 8px; }
-  .page-heading { padding-block: 40px 24px; }
   .footer { margin-top: 56px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
 
-.work h3 a { text-decoration: none; }
-.work-more { display: inline-block; padding-top: 8px; font-size: 12px; }
 .back-link { margin-top: 32px; font-size: 12px; }
 .project { max-width: 900px; margin-inline: auto; }
 .project h1 { font-size: clamp(24px, 4vw, 40px); letter-spacing: .03em; overflow-wrap: anywhere; }
 .project-detail { overflow-wrap: anywhere; }
-.project-detail > p, .project-detail > dl { max-width: 720px; }
-.project .gallery { margin-top: 40px; gap: 24px; }
-.home-intro { max-width: 720px; }
+.project-detail .description { max-width: 720px; margin-top: 40px; }
+.project .gallery { gap: 24px; }

@@ -6,157 +6,83 @@
   <title>WORKS | MORIKAWA RYOTA</title>
   <meta name="description" content="森川亮太の写真撮影・映像演出・制作進行の作品一覧。">
   <link rel="stylesheet" href="css/main.css">
+  <script src="js/works-filter.js" defer></script>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">本文へスキップ</a>
   <header class="header">
     <a class="brand" href="index.html"><img src="assets/svg/logo-horizontal.svg" width="280" height="52" alt="森川亮太 MORIKAWA RYOTA"></a>
-    <nav aria-label="メインナビゲーション"><a href="index.html">TOP</a><a href="works.html" aria-current="page">WORKS</a><a href="about.html">ABOUT</a></nav>
+    <nav aria-label="メインナビゲーション"><a href="works.html" aria-current="page">WORKS</a><a href="about.html">ABOUT</a></nav>
   </header>
   <main id="main">
-    <section class="page-heading"><p class="eyebrow">PORTFOLIO</p><h1>WORKS</h1></section>
-    <nav class="role-nav" aria-label="作品の職能別ナビゲーション"><a href="#photography">PHOTOGRAPHY</a><a href="#directing">DIRECTING</a><a href="#production">PRODUCTION MANAGEMENT</a></nav>
-    <section class="works-section" id="photography" aria-labelledby="photography-title"><h2 id="photography-title">PHOTOGRAPHY</h2><div class="works-grid">
-        <article class="work" id="ig-2024-katawara-album">
-          <a href="works/ig-2024-katawara-album/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2024-katawara-album/img/ig-2024-katawara-album-thumb.svg" alt="katawara — メジャー1stアルバム アーティスト写真・CDジャケット" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2024 / MUSIC / ARTIST</p>
-          <h3><a href="works/ig-2024-katawara-album/index.html">katawara — メジャー1stアルバム アーティスト写真・CDジャケット</a></h3>
-          <p class="client">katawara / メジャーレーベル</p>
-          <a class="work-more" href="works/ig-2024-katawara-album/index.html">作品詳細 →</a>
+    <div class="role-nav works-filters" role="group" aria-label="作品のカテゴリで絞り込み">
+      <button type="button" data-filter="all" aria-pressed="true" aria-controls="works-results">ALL</button>
+      <button type="button" data-filter="photo" aria-pressed="false" aria-controls="works-results">PHOTO</button>
+      <button type="button" data-filter="movie" aria-pressed="false" aria-controls="works-results">MOVIE</button>
+      <button type="button" data-filter="production-staff" aria-pressed="false" aria-controls="works-results">PRODUCTION STAFF</button>
+      <button type="button" data-filter="private" aria-pressed="false" aria-controls="works-results">PRIVATE</button>
+    </div>
+    <p class="filter-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    <div id="works-results" class="works-grid">
+        <article class="work" id="ig-2024-group-portrait-session" data-category="photo" data-date="2024-11-28">
+          <a href="works/ig-2024-group-portrait-session/index.html"><img class="work-image" src="works/ig-2024-group-portrait-session/img/ig-2024-group-portrait-thumb.svg" alt="タレント・モデル 複数名 ビジュアル撮影 (プロダクション案件)" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2024-group-portrait-session">
-          <a href="works/ig-2024-group-portrait-session/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2024-group-portrait-session/img/ig-2024-group-portrait-thumb.svg" alt="タレント・モデル 複数名 ビジュアル撮影 (プロダクション案件)" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2024 / PORTRAIT / TALENT</p>
-          <h3><a href="works/ig-2024-group-portrait-session/index.html">タレント・モデル 複数名 ビジュアル撮影 (プロダクション案件)</a></h3>
-          <p class="client">芸能プロダクション / タレントエージェンシー</p>
-          <a class="work-more" href="works/ig-2024-group-portrait-session/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2024-campfire-content" data-category="production-staff" data-date="2024-10-05">
+          <a href="works/ig-2024-campfire-content/index.html"><img class="work-image" src="works/ig-2024-campfire-content/img/ig-2024-campfire-content-thumb.svg" alt="CAMPFIRE コミュニティ事業部 コンテンツ制作（写真・映像）" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2023-yokoyamayui-portrait">
-          <a href="works/ig-2023-yokoyamayui-portrait/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2023-yokoyamayui-portrait/img/ig-2023-yokoyamayui-portrait-thumb.svg" alt="横山由依 個人活動ポートレート撮影" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2023 / PORTRAIT / MUSIC</p>
-          <h3><a href="works/ig-2023-yokoyamayui-portrait/index.html">横山由依 個人活動ポートレート撮影</a></h3>
-          <p class="client">横山由依 (Individual)</p>
-          <a class="work-more" href="works/ig-2023-yokoyamayui-portrait/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2024-sora-mv-director" data-category="movie" data-date="2024-08-02">
+          <a href="works/ig-2024-sora-mv-director/index.html"><img class="work-image" src="works/ig-2024-sora-mv-director/img/ig-2024-sora-mv-thumb.svg" alt="SORA「青に染まる」Music Video — 監督・演出" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2023-music-artist-photo">
-          <a href="works/ig-2023-music-artist-photo/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2023-music-artist-photo/img/ig-2023-music-artist-thumb.svg" alt="アーティスト アー写・キービジュアル撮影 (音楽ジャンル)" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2023 / MUSIC / ARTIST</p>
-          <h3><a href="works/ig-2023-music-artist-photo/index.html">アーティスト アー写・キービジュアル撮影 (音楽ジャンル)</a></h3>
-          <p class="client">独立系アーティスト</p>
-          <a class="work-more" href="works/ig-2023-music-artist-photo/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2024-katawara-album" data-category="photo" data-date="2024-05-15">
+          <a href="works/ig-2024-katawara-album/index.html"><img class="work-image" src="works/ig-2024-katawara-album/img/ig-2024-katawara-album-thumb.svg" alt="katawara — メジャー1stアルバム アーティスト写真・CDジャケット" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2023-corporate-profile">
-          <a href="works/ig-2023-corporate-profile/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2023-corporate-profile/img/ig-2023-corporate-profile-thumb.svg" alt="コーポレートサイト用プロフィール写真撮影" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2023 / COMMERCIAL / CORPORATE</p>
-          <h3><a href="works/ig-2023-corporate-profile/index.html">コーポレートサイト用プロフィール写真撮影</a></h3>
-          <p class="client">複数企業・個人</p>
-          <a class="work-more" href="works/ig-2023-corporate-profile/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2024-fashion-mv-pm" data-category="production-staff" data-date="2024-03-22">
+          <a href="works/ig-2024-fashion-mv-pm/index.html"><img class="work-image" src="works/ig-2024-fashion-mv-pm/img/ig-2024-fashion-mv-pm-thumb.svg" alt="ファッションブランド「ha|za|ma」PV 制作進行・ライティング" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2023-shirohori-stories">
-          <a href="works/ig-2023-shirohori-stories/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2023-shirohori-stories/img/ig-2023-shirohori-stories-thumb.svg" alt="白ホリドットコム「白ホリストーリーズ」掲載インタビュー・作品" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2023 / MEDIA FEATURE / EXHIBITION</p>
-          <h3><a href="works/ig-2023-shirohori-stories/index.html">白ホリドットコム「白ホリストーリーズ」掲載インタビュー・作品</a></h3>
-          <p class="client">白ホリドットコム (shirohori.com)</p>
-          <a class="work-more" href="works/ig-2023-shirohori-stories/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2024-pm-mv-large" data-category="production-staff" data-date="2024-01-18">
+          <a href="works/ig-2024-pm-mv-large/index.html"><img class="work-image" src="works/ig-2024-pm-mv-large/img/ig-2024-pm-mv-large-thumb.svg" alt="大型MV制作現場 制作進行統括（スタッフ42名）" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2023-fashion-editorial">
-          <a href="works/ig-2023-fashion-editorial/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2023-fashion-editorial/img/ig-2023-fashion-editorial-thumb.svg" alt="ファッション系エディトリアル撮影" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2023 / FASHION / EDITORIAL</p>
-          <h3><a href="works/ig-2023-fashion-editorial/index.html">ファッション系エディトリアル撮影</a></h3>
-          <p class="client">ファッションブランド・スタイリスト</p>
-          <a class="work-more" href="works/ig-2023-fashion-editorial/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2023-noemine-making" data-category="private" data-date="2023-09-20">
+          <a href="works/ig-2023-noemine-making/index.html"><img class="work-image" src="works/ig-2023-noemine-making/img/ig-2023-noemine-making-thumb.svg" alt="ショートドキュメンタリー制作 — 人物の「今」を切り取る映像" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2022-mentaru-room">
-          <a href="works/ig-2022-mentaru-room/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2022-mentaru-room/img/ig-2022-mentaru-room-thumb.svg" alt="Amazon Audible「みんなのメンタールーム」ポッドキャスト スチール撮影" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2022 / COMMERCIAL / MEDIA</p>
-          <h3><a href="works/ig-2022-mentaru-room/index.html">Amazon Audible「みんなのメンタールーム」ポッドキャスト スチール撮影</a></h3>
-          <p class="client">Amazon Audible Japan</p>
-          <a class="work-more" href="works/ig-2022-mentaru-room/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2023-fashion-editorial" data-category="photo" data-date="2023-07-08">
+          <a href="works/ig-2023-fashion-editorial/index.html"><img class="work-image" src="works/ig-2023-fashion-editorial/img/ig-2023-fashion-editorial-thumb.svg" alt="ファッション系エディトリアル撮影" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2021-yohji-mooonene">
-          <a href="works/ig-2021-yohji-mooonene/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2021-yohji-mooonene/img/ig-2021-yohji-mooonene-thumb.svg" alt="Yohji Yamamoto × 黒田萌音 白ホリスタジオポートレート" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2021 / PORTRAIT / FASHION</p>
-          <h3><a href="works/ig-2021-yohji-mooonene/index.html">Yohji Yamamoto × 黒田萌音 白ホリスタジオポートレート</a></h3>
-          <p class="client">Personal Work / Studio Shoot</p>
-          <a class="work-more" href="works/ig-2021-yohji-mooonene/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2023-corporate-profile" data-category="photo" data-date="2023-05-10">
+          <a href="works/ig-2023-corporate-profile/index.html"><img class="work-image" src="works/ig-2023-corporate-profile/img/ig-2023-corporate-profile-thumb.svg" alt="コーポレートサイト用プロフィール写真撮影" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2021-mitanoe-shirohori">
-          <a href="works/ig-2021-mitanoe-shirohori/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2021-mitanoe-shirohori/img/ig-2021-mitanoe-shirohori-thumb.svg" alt="三田のえ — 格好いい系白ホリポートレート (成りのグレー)" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2021 / PORTRAIT / FASHION</p>
-          <h3><a href="works/ig-2021-mitanoe-shirohori/index.html">三田のえ — 格好いい系白ホリポートレート (成りのグレー)</a></h3>
-          <p class="client">Personal Work / Studio Shoot</p>
-          <a class="work-more" href="works/ig-2021-mitanoe-shirohori/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2023-shirohori-stories" data-category="photo" data-date="2023-04-25">
+          <a href="works/ig-2023-shirohori-stories/index.html"><img class="work-image" src="works/ig-2023-shirohori-stories/img/ig-2023-shirohori-stories-thumb.svg" alt="白ホリドットコム「白ホリストーリーズ」掲載インタビュー・作品" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2021-aoyama-studio">
-          <a href="works/ig-2021-aoyama-studio/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2021-aoyama-studio/img/ig-2021-aoyama-studio-thumb.svg" alt="青山裕企師事作品 — 光と影のスタジオポートレート" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2021 / PORTRAIT / EDITORIAL</p>
-          <h3><a href="works/ig-2021-aoyama-studio/index.html">青山裕企師事作品 — 光と影のスタジオポートレート</a></h3>
-          <p class="client">Personal Work / Mentorship Shoot</p>
-          <a class="work-more" href="works/ig-2021-aoyama-studio/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2023-music-artist-photo" data-category="photo" data-date="2023-03-15">
+          <a href="works/ig-2023-music-artist-photo/index.html"><img class="work-image" src="works/ig-2023-music-artist-photo/img/ig-2023-music-artist-thumb.svg" alt="アーティスト アー写・キービジュアル撮影 (音楽ジャンル)" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2021-yukaihands-exhibit">
-          <a href="works/ig-2021-yukaihands-exhibit/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2021-yukaihands-exhibit/img/ig-2021-yukaihands-thumb.svg" alt="写真展「YukaiHands Gallery」出展作品" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2021 / EXHIBITION</p>
-          <h3><a href="works/ig-2021-yukaihands-exhibit/index.html">写真展「YukaiHands Gallery」出展作品</a></h3>
-          <p class="client">YukaiHands Gallery</p>
-          <a class="work-more" href="works/ig-2021-yukaihands-exhibit/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2023-yokoyamayui-portrait" data-category="photo" data-date="2023-01-28">
+          <a href="works/ig-2023-yokoyamayui-portrait/index.html"><img class="work-image" src="works/ig-2023-yokoyamayui-portrait/img/ig-2023-yokoyamayui-portrait-thumb.svg" alt="横山由依 個人活動ポートレート撮影" width="480" height="600" loading="lazy"></a>
         </article>
-    </div></section>
-    <section class="works-section" id="directing" aria-labelledby="directing-title"><h2 id="directing-title">DIRECTING</h2><div class="works-grid">
-        <article class="work" id="ig-2024-sora-mv-director">
-          <a href="works/ig-2024-sora-mv-director/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2024-sora-mv-director/img/ig-2024-sora-mv-thumb.svg" alt="SORA「青に染まる」Music Video — 監督・演出" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2024 / MUSIC VIDEO</p>
-          <h3><a href="works/ig-2024-sora-mv-director/index.html">SORA「青に染まる」Music Video — 監督・演出</a></h3>
-          <p class="client">SORA</p>
-          <a class="work-more" href="works/ig-2024-sora-mv-director/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2022-mentaru-room" data-category="photo" data-date="2022-09-01">
+          <a href="works/ig-2022-mentaru-room/index.html"><img class="work-image" src="works/ig-2022-mentaru-room/img/ig-2022-mentaru-room-thumb.svg" alt="Amazon Audible「みんなのメンタールーム」ポッドキャスト スチール撮影" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2023-noemine-making">
-          <a href="works/ig-2023-noemine-making/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2023-noemine-making/img/ig-2023-noemine-making-thumb.svg" alt="ショートドキュメンタリー制作 — 人物の「今」を切り取る映像" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2023 / DOCUMENTARY</p>
-          <h3><a href="works/ig-2023-noemine-making/index.html">ショートドキュメンタリー制作 — 人物の「今」を切り取る映像</a></h3>
-          <p class="client">Self-Initiated</p>
-          <a class="work-more" href="works/ig-2023-noemine-making/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2022-akb48-yokoyama-making" data-category="movie" data-date="2022-07-14">
+          <a href="works/ig-2022-akb48-yokoyama-making/index.html"><img class="work-image" src="works/ig-2022-akb48-yokoyama-making/img/ig-2022-akb48-yokoyama-thumb.svg" alt="AKB48 横山由依 卒業曲「君がいなくなる12月」MVメイキング" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2022-yumero-making">
-          <a href="works/ig-2022-yumero-making/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2022-yumero-making/img/ig-2022-yumero-making-thumb.svg" alt="ジャルジャル×ノーミーツ コメディ演劇「夢路空港」メイキング映像制作" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2022 / DOCUMENTARY / MAKING</p>
-          <h3><a href="works/ig-2022-yumero-making/index.html">ジャルジャル×ノーミーツ コメディ演劇「夢路空港」メイキング映像制作</a></h3>
-          <p class="client">ノーミーツ / 吉本興業</p>
-          <a class="work-more" href="works/ig-2022-yumero-making/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2022-yumero-making" data-category="movie" data-date="2022-04-22">
+          <a href="works/ig-2022-yumero-making/index.html"><img class="work-image" src="works/ig-2022-yumero-making/img/ig-2022-yumero-making-thumb.svg" alt="ジャルジャル×ノーミーツ コメディ演劇「夢路空港」メイキング映像制作" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2022-akb48-yokoyama-making">
-          <a href="works/ig-2022-akb48-yokoyama-making/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2022-akb48-yokoyama-making/img/ig-2022-akb48-yokoyama-thumb.svg" alt="AKB48 横山由依 卒業曲「君がいなくなる12月」MVメイキング" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2022 / DOCUMENTARY / MUSIC</p>
-          <h3><a href="works/ig-2022-akb48-yokoyama-making/index.html">AKB48 横山由依 卒業曲「君がいなくなる12月」MVメイキング</a></h3>
-          <p class="client">AKB48 / よしもとミュージック</p>
-          <a class="work-more" href="works/ig-2022-akb48-yokoyama-making/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2021-yukaihands-exhibit" data-category="photo" data-date="2021-11-20">
+          <a href="works/ig-2021-yukaihands-exhibit/index.html"><img class="work-image" src="works/ig-2021-yukaihands-exhibit/img/ig-2021-yukaihands-thumb.svg" alt="写真展「YukaiHands Gallery」出展作品" width="480" height="600" loading="lazy"></a>
         </article>
-    </div></section>
-    <section class="works-section" id="production" aria-labelledby="production-title"><h2 id="production-title">PRODUCTION MANAGEMENT</h2><div class="works-grid">
-        <article class="work" id="ig-2024-pm-mv-large">
-          <a href="works/ig-2024-pm-mv-large/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2024-pm-mv-large/img/ig-2024-pm-mv-large-thumb.svg" alt="大型MV制作現場 制作進行統括（スタッフ42名）" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2024 / MUSIC VIDEO / PRODUCTION</p>
-          <h3><a href="works/ig-2024-pm-mv-large/index.html">大型MV制作現場 制作進行統括（スタッフ42名）</a></h3>
-          <p class="client">メジャーレーベル / MV制作会社</p>
-          <a class="work-more" href="works/ig-2024-pm-mv-large/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2021-aoyama-studio" data-category="private" data-date="2021-09-05">
+          <a href="works/ig-2021-aoyama-studio/index.html"><img class="work-image" src="works/ig-2021-aoyama-studio/img/ig-2021-aoyama-studio-thumb.svg" alt="青山裕企師事作品 — 光と影のスタジオポートレート" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2024-fashion-mv-pm">
-          <a href="works/ig-2024-fashion-mv-pm/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2024-fashion-mv-pm/img/ig-2024-fashion-mv-pm-thumb.svg" alt="ファッションブランド「ha|za|ma」PV 制作進行・ライティング" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2024 / COMMERCIAL / FASHION</p>
-          <h3><a href="works/ig-2024-fashion-mv-pm/index.html">ファッションブランド「ha|za|ma」PV 制作進行・ライティング</a></h3>
-          <p class="client">ha|za|ma (ファッションブランド)</p>
-          <a class="work-more" href="works/ig-2024-fashion-mv-pm/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2021-mitanoe-shirohori" data-category="private" data-date="2021-06-18">
+          <a href="works/ig-2021-mitanoe-shirohori/index.html"><img class="work-image" src="works/ig-2021-mitanoe-shirohori/img/ig-2021-mitanoe-shirohori-thumb.svg" alt="三田のえ — 格好いい系白ホリポートレート (成りのグレー)" width="480" height="600" loading="lazy"></a>
         </article>
-        <article class="work" id="ig-2024-campfire-content">
-          <a href="works/ig-2024-campfire-content/index.html" tabindex="-1" aria-hidden="true"><img class="work-image" src="works/ig-2024-campfire-content/img/ig-2024-campfire-content-thumb.svg" alt="CAMPFIRE コミュニティ事業部 コンテンツ制作（写真・映像）" width="480" height="600" loading="lazy"></a>
-          <p class="eyebrow">2024 / DOCUMENTARY / MEDIA</p>
-          <h3><a href="works/ig-2024-campfire-content/index.html">CAMPFIRE コミュニティ事業部 コンテンツ制作（写真・映像）</a></h3>
-          <p class="client">株式会社CAMPFIRE</p>
-          <a class="work-more" href="works/ig-2024-campfire-content/index.html">作品詳細 →</a>
+        <article class="work" id="ig-2021-yohji-mooonene" data-category="private" data-date="2021-04-10">
+          <a href="works/ig-2021-yohji-mooonene/index.html"><img class="work-image" src="works/ig-2021-yohji-mooonene/img/ig-2021-yohji-mooonene-thumb.svg" alt="Yohji Yamamoto × 黒田萌音 白ホリスタジオポートレート" width="480" height="600" loading="lazy"></a>
         </article>
-    </div></section>
-
+    </div>
   </main>
-  <footer class="footer"><small>&copy; RYOTA MORIKAWA</small><a href="#top">ページ上部へ ↑</a></footer>
+  <footer class="footer"><small>&copy; RYOHTA MORIKAWA</small></footer>
 </body>
 </html>
