@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1350" width="1000" height="1350">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1919"/>
+      <stop offset="60%" stop-color="#130f11"/>
+      <stop offset="100%" stop-color="#080608"/>
+    </linearGradient>
+    <radialGradient id="spot" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#e26a4a" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.07 0" />
+      <feBlend mode="multiply" in="SourceGraphic" />
+    </filter>
+  </defs>
+  <rect width="1000" height="1350" fill="url(#bg)" />
+  <rect width="1000" height="1350" fill="url(#spot)" />
+  <rect width="1000" height="1350" filter="url(#noise)" fill="#000000" opacity="0.15" />
+  
+  
+  <rect x="50" y="50" width="900" height="1250" fill="none" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1" />
+  <line x1="45" y1="50" x2="55" y2="50" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" />
+  <line x1="945" y1="50" x2="955" y2="50" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" />
+  <line x1="45" y1="1300" x2="55" y2="1300" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" />
+  <line x1="945" y1="1300" x2="955" y2="1300" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1.5" />
+
+  
+  <path d="M 490 675 L 510 675 M 500 665 L 500 685" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1" />
+
+  
+
+  
+  <g transform="translate(500, 660)">
+    
+    <rect x="-140" y="-120" width="280" height="180" rx="10" fill="#0c0d12" stroke="#ffffff" stroke-opacity="0.1" />
+    
+    <polygon points="-140,-90 -240,-130 -240,50 -140,30" fill="#13141c" stroke="#e26a4a" stroke-opacity="0.3" />
+    
+    <rect x="-80" y="-200" width="160" height="70" rx="4" fill="#090a0f" stroke="#ffffff" stroke-opacity="0.2" />
+    <rect x="-70" y="-192" width="140" height="54" fill="#1a2530" />
+    <circle cx="50" cy="-165" r="4" fill="#ff3344" />
+    
+    <path d="M -160 80 L -80 60 L 80 60 L 160 80 L 180 200 L -180 200 Z" fill="#0c0d12" />
+    
+    <polygon points="-240,-40 -500,-150 -500,100 -240,-20" fill="#e26a4a" fill-opacity="0.08" />
+  </g>
+
+  
+  <text x="80" y="110" font-family="'Heebo', sans-serif" font-size="12" font-weight="600" fill="#ffffff" fill-opacity="0.6" letter-spacing="3">RYOTA MORIKAWA</text>
+  <text x="920" y="110" text-anchor="end" font-family="'Heebo', sans-serif" font-size="12" font-weight="600" fill="#e26a4a" fill-opacity="0.8" letter-spacing="2">REC ●</text>
+
+  <text x="80" y="1240" font-family="'Hiragino Mincho ProN', 'Yu Mincho', serif" font-size="28" font-weight="700" fill="#ffffff" fill-opacity="0.9" letter-spacing="4">物語を紡ぐ視線</text>
+  <text x="80" y="1275" font-family="'Heebo', sans-serif" font-size="13" font-weight="400" fill="#ffffff" fill-opacity="0.6" letter-spacing="3">DIRECTOR & PRODUCTION MANAGEMENT</text>
+  <text x="920" y="1275" text-anchor="end" font-family="'Heebo', sans-serif" font-size="12" font-weight="400" fill="#ffffff" fill-opacity="0.4" letter-spacing="2">35mm / T1.5</text>
+</svg>
