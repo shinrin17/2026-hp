@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import WorkPage from '../../../components/works/WorkPage.astro';
+import WorkRedirect from '../../../components/WorkRedirect.astro';
+import { getWorks, workHref, routeSegment } from '../../../lib/works';
+
+export async function getStaticPaths() {
+  return (await getWorks()).flatMap((work) => [
+    { params: { path: work.data.slug }, props: { work, legacy: false } },
+    ...(work.id === work.data.slug ? [] : [
+      { params: { path: routeSegment(work.id) }, props: { work, legacy: true } },
+    ]),
+  ]);
+}
+interface Props { work: CollectionEntry<'works'>; legacy: boolean }
+const { work, legacy } = Astro.props;
+---
+{legacy
+  ? <WorkRedirect title={work.data.title} target={workHref(work.data.slug)} />
+  : <WorkPage work={work} />}

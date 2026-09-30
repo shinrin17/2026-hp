@@ -1,0 +1,46 @@
+---
+import '../styles/main.css';
+import { ClientRouter, fade } from 'astro:transitions';
+import SeoHead from '../components/SeoHead.astro';
+import type { PageMetadata } from '../lib/seo';
+interface Props extends PageMetadata {
+  section?: 'home' | 'works' | 'about';
+}
+const { section, ...metadata } = Astro.props;
+const type = metadata.openGraph?.type ?? 'website';
+const ogPrefix = `og: https://ogp.me/ns#${type === 'website' ? '' : ` ${type}: https://ogp.me/ns/${type}#`}`;
+---
+<!doctype html>
+<html lang="ja" prefix={ogPrefix} transition:animate="none">
+  <head>
+    <SeoHead {...metadata} />
+    <ClientRouter />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">本文へスキップ</a>
+    <header class="header" transition:persist="site-header" transition:animate="none">
+      <a class="brand" href="/" aria-current={section === 'home' ? 'page' : undefined}>
+        ICHIRINKA
+      </a>
+      <nav aria-label="メインナビゲーション">
+        <a href="/about/" aria-current={section === 'about' ? 'page' : undefined}>ABOUT</a>
+        <a href="/works/" aria-current={section === 'works' ? 'page' : undefined}>WORKS</a>
+      </nav>
+    </header>
+    <main id="main" transition:name="page-content" transition:animate={fade({ duration: '300ms' })}><slot /></main>
+    <footer class="footer" transition:persist="site-footer" transition:animate="none"><small>&copy; RYOHTA MORIKAWA</small></footer>
+  </body>
+</html>
+
+<script>
+  // Keep the shared header DOM, but update the current-page indicator.
+  document.addEventListener('astro:before-swap', (event) => {
+    const nextLinks = event.newDocument.querySelectorAll('.header a');
+    document.querySelectorAll('.header a').forEach((link) => {
+      const nextLink = Array.from(nextLinks).find((next) => next.getAttribute('href') === link.getAttribute('href'));
+      const current = nextLink?.getAttribute('aria-current');
+      if (current) link.setAttribute('aria-current', current);
+      else link.removeAttribute('aria-current');
+    });
+  });
+</script>

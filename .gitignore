@@ -1,1 +1,10 @@
 .DS_Store
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.imports/
+test-results/
+.nvmrc

@@ -1,0 +1,11 @@
+---
+interface Props { summary: string; source?: string; sourceLabel?: string }
+const { summary, source, sourceLabel } = Astro.props;
+const label = sourceLabel ?? (source && new URL(source).hostname.endsWith('instagram.com') ? 'Instagram' : '公式サイト');
+---
+<!-- 編集元: index.md の summary、本文（概要・担当内容・クレジット）、source -->
+<div class="description">
+  {summary && <p class="project-summary">{summary}</p>}
+  <div class="work-body"><slot /></div>
+  {source && <p class="source-link"><a href={source} target="_blank" rel="noopener noreferrer"><span class="source-link-label">{label}</span> ↗</a></p>}
+</div>

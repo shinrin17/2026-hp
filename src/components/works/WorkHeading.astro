@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { categoryLabels } from '../../config/site';
+interface Props { work: CollectionEntry<'works'> }
+const { data } = Astro.props.work;
+---
+<!-- 編集元: works/<作品名>/index.md の title / categories / publishedAt / role / client -->
+<header class="project-heading">
+  <p class="eyebrow">{data.categories.map((category) => categoryLabels[category]).join(' / ')}</p>
+  <h1>{data.title}</h1>
+  <p class="client"><time datetime={data.publishedAt}>{data.publishedAt.slice(0, 10).replaceAll('-', '.')}</time></p>
+  {(data.role || data.client) && <dl class="project-facts">
+    {data.role && <div><dt>担当</dt><dd>{data.role}</dd></div>}
+    {data.client && <div><dt>クライアント</dt><dd>{data.client}</dd></div>}
+  </dl>}
+</header>

@@ -1,0 +1,47 @@
+---
+import { siteInfo } from '../config/site';
+import { websiteData, serializeStructuredData, type PageMetadata } from '../lib/seo';
+type Props = PageMetadata;
+const { title, description = siteInfo.description, path, openGraph = { type: 'website' }, structuredData } = Astro.props;
+const canonical = new URL(path, Astro.site!);
+const socialImage = siteInfo.socialImage;
+const socialImageUrl = new URL(socialImage.path, Astro.site!).href;
+const profileUrl = new URL('/about/', Astro.site!).href;
+const data = structuredData ?? websiteData(Astro.site!);
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="icon" type="image/png" href="/favicon.png" sizes="48x48" />
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta property="og:type" content={openGraph.type} />
+<meta property="og:locale" content="ja_JP" />
+<meta property="og:site_name" content={siteInfo.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+{openGraph.type === 'article' && <>
+  <meta property="article:published_time" content={openGraph.publishedTime} />
+  <meta property="article:author" content={profileUrl} />
+  {openGraph.tags[0] && <meta property="article:section" content={openGraph.tags[0]} />}
+  {openGraph.tags.map((tag) => <meta property="article:tag" content={tag} />)}
+</>}
+{openGraph.type === 'profile' && <>
+  <meta property="profile:first_name" content={openGraph.firstName} />
+  <meta property="profile:last_name" content={openGraph.lastName} />
+</>}
+<meta property="og:image" content={socialImageUrl} />
+<meta property="og:image:secure_url" content={socialImageUrl} />
+<meta property="og:image:type" content={socialImage.type} />
+<meta property="og:image:width" content={String(socialImage.width)} />
+<meta property="og:image:height" content={String(socialImage.height)} />
+<meta property="og:image:alt" content={socialImage.alt} />
+<!-- Summary cards request a square thumbnail; other services control their own crop. -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImageUrl} />
+<meta name="twitter:image:alt" content={socialImage.alt} />
+<script type="application/ld+json" set:html={serializeStructuredData(data)} />
