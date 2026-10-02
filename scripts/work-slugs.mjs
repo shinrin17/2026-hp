@@ -8,7 +8,7 @@ export function assertSlug(slug) {
 }
 
 // Reserve draft slugs too, and prevent a new URL from replacing another work's
-// old redirect or images. Folder names remain the source and legacy identifiers.
+// folder-based image URLs. Folder names remain the source identifiers.
 export function assertWorkSlugs(works) {
   const owners = new Map();
   const folders = new Map(works.map((work) => [work.folder.normalize(), work.folder]));

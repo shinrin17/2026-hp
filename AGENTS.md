@@ -5,7 +5,7 @@
 - 最初に README.md を読み、対象の `works/<作品名>/index.md` を開く。
 - Instagram取得・作品追加では `docs/works-guide.md` を読み、slugの命名・重複確認・資料に基づく項目の整理をCodex側で行う。取得できる情報は先に確認し、任意項目の空欄や命名だけで人間へ差し戻さない。
 - 個別作品の内容・画像順は `index.md`、画像ファイルは隣の `img/` で管理する。
-- 公開済みの `slug`・フォルダ名・`workId` を変更しない。表示名の変更は `title` のみ。公開URLは `/works/<slug>/`、フォルダ名は画像・旧URLからの転送に使う。
+- 公開済みの `slug`・フォルダ名・`workId` を変更しない。表示名の変更は `title` のみ。公開URLは `/works/<slug>/`、フォルダ名は作品の編集元・旧画像URLに使う。旧ページURLへの転送HTMLは生成しない。
 - 新規作品には短い英小文字・数字・ハイフンの `slug` を付ける（例：`omori-moyooshi`）。一覧・canonical・サイトマップにURLを直書きせず、共通の `workHref` を使う。
 - 内部のページリンクは末尾 `/` に統一する。トップ `/`・作品一覧 `/works/`・プロフィール `/about/` を使い、`.html` のリンクを追加しない。
 - ページ内の「見出し」「ギャラリー」「説明」「リンク」は index.md の対応項目を編集する。共通デザインの依頼では `src/components/works/` と `src/styles/main.css` を使う。

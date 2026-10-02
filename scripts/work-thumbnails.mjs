@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import sharp from 'sharp';
+import { workImagePath, imageDimensions } from './work-images.mjs';
 
 const widths = [400, 800, 1200];
 const webpOptions = { quality: 88, effort: 4 };
@@ -10,19 +11,14 @@ const resizeOptions = { withoutEnlargement: true, fastShrinkOnLoad: false };
 // Include the processing policy in URLs so a quality change invalidates caches too.
 const recipe = JSON.stringify({ version: 1, widths, webpOptions, resizeOptions });
 
-export async function getWorkThumbnail(folder, data, root = resolve('works')) {
+async function responsiveWorkImage(folder, data, root, candidateWidths, defaultWidth) {
   const image = data.images[0];
   if (!image) throw new Error(`${folder}/index.md: サムネイルの元画像がありません。`);
-  const sourcePath = resolve(root, folder, image.file);
-  if (dirname(sourcePath) !== resolve(root, folder, 'img')) throw new Error(`Invalid image: ${sourcePath}`);
+  const sourcePath = workImagePath(root, folder, image.file);
   const original = await readFile(sourcePath);
-  const metadata = await sharp(original).metadata();
-  if (!metadata.width || !metadata.height) throw new Error(`Image size unavailable: ${sourcePath}`);
-  const rotated = [5, 6, 7, 8].includes(metadata.orientation ?? 1);
-  const width = rotated ? metadata.height : metadata.width;
-  const height = rotated ? metadata.width : metadata.height;
+  const { width, height } = imageDimensions(await sharp(original).metadata(), sourcePath);
   const hash = createHash('sha256').update(recipe).update(original).digest('hex').slice(0, 16);
-  const variants = [...new Set(widths.map((size) => Math.min(size, width)))].map((size) => {
+  const variants = [...new Set(candidateWidths.map((size) => Math.min(size, width)))].map((size) => {
     const file = `${hash}-${size}.webp`;
     return {
       file,
@@ -37,9 +33,18 @@ export async function getWorkThumbnail(folder, data, root = resolve('works')) {
     height,
     alt: image.alt ?? `${data.title} — 1`,
     variants,
-    src: variants[Math.min(1, variants.length - 1)].src,
+    src: (variants.find((variant) => variant.width >= defaultWidth) ?? variants.at(-1)).src,
     srcset: variants.map((variant) => `${variant.src} ${variant.width}w`).join(', '),
   };
+}
+
+export function getWorkThumbnail(folder, data, root = resolve('works')) {
+  return responsiveWorkImage(folder, data, root, widths, 800);
+}
+
+export function getWorkHeroImage(folder, data, root = resolve('works')) {
+  // Reuse list URLs, adding enough pixels for the 840px hero at 2x / 3x density.
+  return responsiveWorkImage(folder, data, root, [...widths, 1680, 2520], 1200);
 }
 
 export async function renderWorkThumbnail(sourcePath, width) {

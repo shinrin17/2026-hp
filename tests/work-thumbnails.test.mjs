@@ -7,7 +7,7 @@ import sharp from 'sharp';
 import { newWork } from '../scripts/new-work.mjs';
 import { importInstagram } from '../scripts/import-instagram.mjs';
 import { readWorks, parseWork, formatWork } from '../scripts/work-files.mjs';
-import { getWorkThumbnail, renderWorkThumbnail } from '../scripts/work-thumbnails.mjs';
+import { getWorkThumbnail, getWorkHeroImage, renderWorkThumbnail } from '../scripts/work-thumbnails.mjs';
 
 async function fixture(t) {
   const root = await mkdtemp(join(tmpdir(), 'portfolio-thumbnails-'));
@@ -18,6 +18,24 @@ async function fixture(t) {
 
 const sourceImage = (width, height, background = '#224466') => sharp({
   create: { width, height, channels: 3, background },
+});
+
+test('トップは一覧のWebPを共用し、高精細画面向けだけ追加して元画像以上に拡大しない', async (t) => {
+  const root = await fixture(t);
+  const folder = '代表作';
+  const imageDir = join(root, 'works', folder, 'img');
+  await mkdir(imageDir, { recursive: true });
+  await sourceImage(1920, 1440).jpeg().toFile(join(imageDir, '01.jpg'));
+  const data = { slug: 'featured', title: '代表作', images: [{ file: 'img/01.jpg' }] };
+  const list = await getWorkThumbnail(folder, data, join(root, 'works'));
+  const hero = await getWorkHeroImage(folder, data, join(root, 'works'));
+  assert.deepEqual(hero.variants.slice(0, 3), list.variants);
+  assert.deepEqual(hero.variants.map(({ width }) => width), [400, 800, 1200, 1680, 1920]);
+  assert.equal(hero.src, list.variants[2].src);
+  const metadata = await sharp(await renderWorkThumbnail(hero.sourcePath, 1680)).metadata();
+  assert.equal(metadata.format, 'webp');
+  assert.equal(metadata.width, 1680);
+  assert.equal(metadata.height, 1260);
 });
 
 test('手動追加の先頭からWebPを生成し、並び替え・同名画像の更新でURLが変わる', async (t) => {

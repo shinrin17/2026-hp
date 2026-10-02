@@ -23,7 +23,7 @@ src/
     index.astro        ← トップページ
     about.astro        ← プロフィール・お問い合わせ
     works.astro        ← 作品一覧
-    works/[path]/index.astro  ← slugの公開URL・旧URLからの転送
+    works/[path]/index.astro  ← slugの公開URL
   components/works/
     WorkPage.astro         ← 作品詳細の共通構成
     WorkHeading.astro      ← タイトル・日付・担当
@@ -63,6 +63,8 @@ npm run preview   # 公開する dist/ をプレビュー
 ```
 
 `dist/`、`node_modules/`、`.astro/` は自動生成物なので編集・コミットしません。`python3 -m http.server` でリポジトリ直下を配信する旧手順は使いません。
+
+`public/CNAME` は編集元、`dist/CNAME` はビルド時にコピーされる公開用ファイルです。同様に、`src/pages/about.astro` から `dist/about/index.html` を生成します。旧URL用の `dist/about.html` などの転送HTMLは生成しません。公開用ファイルは編集元からビルドで更新してください。ローカルで公開プレビューを使わない場合は `dist/` 全体を削除でき、次の `npm run build` で再生成されます。
 
 ## 作品詳細のどこを修正するか
 
@@ -127,11 +129,12 @@ sourceLabel: 公式サイト
 作品一覧のサムネイルは `images` の先頭から **WebPを自動生成**します。手動追加・Instagram取り込みとも追加の書き出し作業は不要です。開発時は必要に応じて生成し、`npm run build`（`npm run verify`・公開時のビルドを含む）で公開用ファイルを生成します。
 
 - 幅400・800・1200pxを用意し、画面幅と画素密度に応じてブラウザが選びます。小さい元画像は拡大せず、重複サイズも生成しません。
-- WebP品質88で生成し、縦横比・構図・透明度を保ち、EXIFの回転を反映します。元画像・トップの代表作・作品詳細は変更しません。
+- WebP品質88で生成し、縦横比・構図・透明度を保ち、EXIFの回転を反映します。作品詳細は引き続き元画像を使います。
+- トップの代表作も同じWebPを使い、代表作に限って1680・2520pxの候補を追加生成します（元画像の幅が上限）。表示サイズと画素密度に応じて選択し、最初のスライドを優先して読み込みます。`featuredWorkIds` の追加・変更にも自動適用されます。
 - 先頭画像の変更、同名画像の差し替え、Instagram再取得で公開Markdownの先頭画像が変わった場合は、次のビルドで反映します。取得時に保護された手修正はそのままです。
 - サムネイルは `/assets/work-thumbnails/<slug>/<内容ハッシュ>-<幅>.webp` へ出力します。画像の内容をURLに反映するため、差し替え後に古いキャッシュを使い続けません。`works/` への派生画像の保存や、Markdownへのサムネイル項目の追加は不要です。
 
-生成設定は `scripts/work-thumbnails.mjs`、一覧への適用は `src/pages/works.astro` にあります。
+生成設定は `scripts/work-thumbnails.mjs`、一覧への適用は `src/pages/works.astro`、トップへの適用は `src/components/Hero.astro` にあります。
 
 ### 公開URLの決め方
 
@@ -145,11 +148,11 @@ slug: omori-moyooshi
 
 - アーティスト名＋短い作品名を基本にします（例：`kanae-minority`、`nogizaka-fortissimo`）。
 - 英小文字・数字・単語の間のハイフンのみ、64文字以内。`/` や拡張子は書きません。
-- 同名作品の写真と映像などは `-photo`・`-making` で区別します。重複や別作品の旧URLとの衝突は検証エラーになります。
+- 同名作品の写真と映像などは `-photo`・`-making` で区別します。重複や別作品の旧画像URLとの衝突は検証エラーになります。
 - `slug: ""` は下書きのみ許可します。公開前に必ず記入してください。
 - 一覧・トップからのリンク、canonical、OGP、構造化データ、サイトマップは同じ `slug` を参照します。
 
-**公開済みの `slug`・作品フォルダ名・`workId` は維持してください。** `slug` は公開URL・一覧への戻り先（`/works/#<slug>`）、フォルダ名は画像URLと移行前URLの転送、`workId` は投稿の重複判定・代表作の指定に使用します。表示名だけなら `title` を変更します。公開後に `slug` を変える必要がある場合は、その変更前のURLからの転送も別途追加してください。
+**公開済みの `slug`・作品フォルダ名・`workId` は維持してください。** `slug` は公開URL・一覧への戻り先（`/works/#<slug>`）、フォルダ名は作品の編集元と旧画像URL、`workId` は投稿の重複判定・代表作の指定に使用します。表示名だけなら `title` を変更します。公開後に `slug` を変える必要がある場合は、その変更前のURLからの転送も別途追加してください。
 
 ## 1. Instagramから取得して更新する（通常の運用）
 
@@ -232,10 +235,10 @@ Codex用の編集ルールは [AGENTS.md](AGENTS.md) にあります。
 - トップの代表作：`src/config/site.ts` の `featuredWorkIds` を、作品の `workId` で指定します。配列順がスライド順です。
 - プロフィール・連絡先：`src/pages/about.astro`。
 - 作品詳細の並び・構成：`src/components/works/WorkPage.astro` と同じフォルダの各部品。
-- 作品URL・旧URLからの転送：`src/pages/works/[path]/index.astro` と `src/components/WorkRedirect.astro`。
+- 作品URL：`src/pages/works/[path]/index.astro`。
 - 共通の検索/SNS情報：`src/components/SeoHead.astro`。構造化データと作品説明の生成は `src/lib/seo.ts`。
 - 作品・画像URLの生成：`src/lib/work-urls.ts` の `workHref` / `imageHref`。
-- 画像寸法の取得：`src/lib/works.ts`。代表作は `getCoverImage` で先頭だけ、詳細は `getImages` でギャラリー全体を読みます。一覧のWebPサムネイルは `scripts/work-thumbnails.mjs` の `getWorkThumbnail` を使います。
+- 画像寸法の取得：詳細は `src/lib/works.ts` の `getImages` でギャラリー全体を読みます。画像パスとEXIF回転後の寸法は `scripts/work-images.mjs` で共通化しています。WebP生成は `scripts/work-thumbnails.mjs` にまとめ、一覧は `getWorkThumbnail`、トップの代表作は `getWorkHeroImage` を使います。
 - サイトURL：`astro.config.mjs` の `site`。ドメインを変える場合は `public/CNAME` と検証スクリプトも確認します。
 
 タイトル・description・canonical・OGP・JSON-LD・サイトマップを生成します。構造化データには本人のプロフィールや作品との関係を記述し、未確認の担当業務は補完しません。
@@ -256,12 +259,12 @@ OGP画像は全ページ共通で `public/assets/images/ichirinka-og.webp` を�
 2. 独自ドメイン `m-ryohta.com` の設定を維持します。
 3. 変更を `main` にpushすると検証・ビルド・公開が実行されます。PRでは検証だけ実行します。
 
-作品詳細の正規URLは `/works/<slug>/` です。既存の `/works/<作品フォルダ>/index.html`（同じフォルダの末尾 `/` も含む）は、新URLを指すcanonicalと即時meta refreshを持つ転送ページになります。GitHub Pagesの静的配信なので、HTTP 301ではなくHTMLによる転送です。サイトマップには新しい正規URLのみを載せます。
+作品詳細は `/works/<slug>/` の正規URLだけを生成します。作品フォルダ名とslugが異なる場合の旧 `/works/<作品フォルダ>/index.html` と `/works/<作品フォルダ>/` は廃止し、転送HTMLを生成しません。サイトマップには正規URLのみを載せます。
 
-固定ページも、トップ `/`・プロフィール `/about/`・作品一覧 `/works/` に統一しています。ヘッダーや「WORKS」も末尾 `/` のURLを使います。旧 `/about.html`・`/works.html` には新URLへ即時転送するHTMLを生成します。トップの `/index.html` は `/` と同じファイルで、正規URLは `/` です。
+固定ページも、トップ `/`・プロフィール `/about/`・作品一覧 `/works/` に統一しています。ヘッダーや「WORKS」も末尾 `/` のURLを使います。旧 `/about.html`・`/works.html` は廃止し、転送HTMLを生成しません。トップの `/index.html` は `/` と同じファイルで、正規URLは `/` です。
 
 ページ内の画像は `/works/<slug>/img/<ファイル名>` を参照します。作品フォルダ名に `&`・`:`・`#` が含まれていても、開発サーバー・公開プレビューで同じURLから表示できます。画像の編集場所は引き続き `works/<作品名>/img/` です。旧画像URLも公開出力に残しています。`#` を含む既存作品名は専用の読み込み処理とビルド完了処理で対応しています。
 
-`npm run verify` はファイルの存在確認に加え、開発サーバーと公開プレビューを一時起動し、全公開ページ内の画像・OGP画像・構造化データの画像をHTTP経由で取得して検証します。ビルド済みの状態なら `npm run verify:http` で配信検証だけを実行できます。
+`npm run verify` はファイルの存在確認に加え、開発サーバーと公開プレビューを一時起動し、全公開ページ内の画像・OGP画像・構造化データの画像をHTTP経由で取得して検証します。公開プレビューでは廃止したページURLが404になることも確認します。ビルド済みの状態なら `npm run verify:http` で配信検証だけを実行できます。
 
 今回の移行で巨大な `data/instagram-works.json` とPython製HTML生成処理、手管理の生成HTMLは廃止しました。公開用ファイルの生成は `npm run build` に統一しています。

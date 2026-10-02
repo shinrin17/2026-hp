@@ -1,19 +1,26 @@
 ---
 import { featuredWorkIds, categoryLabels } from '../config/site';
-import { getWorks, getCoverImage, workHref } from '../lib/works';
+import { getWorks, workHref } from '../lib/works';
+import { getWorkHeroImage } from '../../scripts/work-thumbnails.mjs';
 const works = await getWorks();
 const slides = await Promise.all(featuredWorkIds.map(async (id) => {
   const work = works.find((entry) => entry.data.workId === id);
   if (!work) throw new Error(`トップページの代表作が見つかりません: ${id}`);
-  return { work, image: await getCoverImage(work) };
+  return { work, image: await getWorkHeroImage(work.id, work.data) };
 }));
 const tallestImageRatio = Math.min(...slides.map(({ image }) => image.width / image.height));
+function heroSizes(image: { width: number; height: number }) {
+  // Match object-fit: contain inside the 16:10 desktop frame, capped at 840px.
+  // On mobile the frame uses the tallest photo, so every photo fills its width.
+  const desktopScale = Math.min(1, (image.width / image.height) / (16 / 10));
+  return `(max-width: 768px) calc(100vw - 24px), (max-width: 864px) calc((100vw - 24px) * ${desktopScale}), ${840 * desktopScale}px`;
+}
 ---
 <section class="hero" style={`--hero-image-ratio: ${tallestImageRatio}`} aria-label="代表作" aria-roledescription="カルーセル">
   <div class="hero-slides" aria-live="off">
     {slides.map(({ work, image }, index) => <a class:list={['hero-slide', { 'is-active': index === 0 }]} href={workHref(work.data.slug)} aria-label={`${index + 1} / ${slides.length}：${work.data.title}`} aria-hidden={index === 0 ? undefined : 'true'} inert={index > 0}>
       <figure>
-        <div class="hero-image"><img src={image.src} width={image.width} height={image.height} alt={image.alt} fetchpriority={index === 0 ? 'high' : undefined} /></div>
+        <div class="hero-image"><img src={image.src} srcset={image.srcset} sizes={heroSizes(image)} width={image.width} height={image.height} alt={image.alt} fetchpriority={index === 0 ? 'high' : 'low'} /></div>
         <figcaption><span class="eyebrow">{work.data.categories.map((category) => categoryLabels[category]).join(' / ')}</span><span>{work.data.title}</span></figcaption>
       </figure>
     </a>)}

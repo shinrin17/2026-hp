@@ -2,6 +2,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { assertWorkSlugs } from '../../scripts/work-slugs.mjs';
+import { workImagePath, imageDimensions } from '../../scripts/work-images.mjs';
 import { imageHref } from './work-urls';
 export { workHref, imageHref } from './work-urls';
 export { routeSegment } from '../../scripts/work-files.mjs';
@@ -25,27 +26,18 @@ export async function getWorks() {
 async function getImage(entry: CollectionEntry<'works'>, index: number) {
   const image = entry.data.images[index];
   if (!image) throw new Error(`${entry.id}/index.md: 画像がありません。`);
-  const path = resolve(worksRoot, entry.id, image.file);
-  if (!path.startsWith(`${resolve(worksRoot, entry.id)}/img/`)) throw new Error(`Invalid image: ${path}`);
-  const metadata = await sharp(path).metadata();
-  if (!metadata.width || !metadata.height) throw new Error(`Image size unavailable: ${path}`);
-  const rotated = [5, 6, 7, 8].includes(metadata.orientation ?? 1);
+  const path = workImagePath(worksRoot, entry.id, image.file);
+  const dimensions = imageDimensions(await sharp(path).metadata(), path);
   return {
     ...image,
     src: imageHref(entry.data.slug, image.file),
-    width: rotated ? metadata.height : metadata.width,
-    height: rotated ? metadata.width : metadata.height,
+    ...dimensions,
     alt: image.alt ?? `${entry.data.title} — ${index + 1}`,
   };
 }
 
 export function getImages(entry: CollectionEntry<'works'>) {
   return Promise.all(entry.data.images.map((_, index) => getImage(entry, index)));
-}
-
-// The hero needs only the cover; the list uses generated WebP thumbnails.
-export function getCoverImage(entry: CollectionEntry<'works'>) {
-  return getImage(entry, 0);
 }
 
 export type WorkImage = Awaited<ReturnType<typeof getImages>>[number];

@@ -4,22 +4,28 @@ import { resolve } from 'node:path';
 import { dev, preview } from 'astro';
 import { parse } from 'parse5';
 import sharp from 'sharp';
-import { getWorkThumbnail } from './work-thumbnails.mjs';
 import { readWorks } from './work-files.mjs';
+import { getWorkThumbnail, getWorkHeroImage } from './work-thumbnails.mjs';
+import { featuredWorkIds } from '../src/config/site.ts';
+import { workHref, imageHref } from '../src/lib/work-urls.ts';
 
 const mode = process.argv[2];
 assert.ok(['dev', 'preview'].includes(mode), '使い方: node scripts/verify-http.mjs dev|preview');
 const works = (await readWorks(resolve('works'))).filter((work) => !work.data.draft);
-const pages = ['/', '/works/', '/about/', ...works.map((work) => `/works/${work.data.slug}/`)];
+const pages = ['/', '/works/', '/about/', ...works.map((work) => workHref(work.data.slug))];
+const removedPages = ['/about.html', '/works.html', ...works
+  .filter((work) => work.folder !== work.data.slug)
+  .flatMap((work) => [`/works/${encodeURIComponent(work.folder)}/`, `/works/${encodeURIComponent(work.folder)}/index.html`])];
 const sourceRoot = resolve(mode === 'preview' ? 'dist' : 'public');
 const expectedImages = new Map();
 const expectedThumbnails = new Map((await Promise.all(works.map(async (work) => {
-  const thumbnail = await getWorkThumbnail(work.folder, work.data);
+  const getImage = featuredWorkIds.includes(work.data.workId) ? getWorkHeroImage : getWorkThumbnail;
+  const thumbnail = await getImage(work.folder, work.data);
   return thumbnail.variants.map((variant) => [variant.src, variant]);
 }))).flat());
 for (const work of works) {
   for (const image of work.data.images) {
-    expectedImages.set(`/works/${work.data.slug}/${image.file}`, resolve('works', work.folder, image.file));
+    expectedImages.set(decodeURIComponent(imageHref(work.data.slug, image.file)), resolve('works', work.folder, image.file));
   }
 }
 function elements(node) {
@@ -40,12 +46,15 @@ const server = await start({
 try {
   const port = mode === 'dev' ? server.address.port : server.port;
   const origin = `http://127.0.0.1:${port}`;
-  const verificationFile = 'googleb12b508bf6084b36.html';
-  const verificationResponse = await fetch(new URL(`/${verificationFile}`, origin), {
-    redirect: 'manual', signal: AbortSignal.timeout(15_000),
-  });
-  assert.equal(verificationResponse.status, 200, `${mode}: Search Console確認ファイル取得失敗`);
-  assert.deepEqual(Buffer.from(await verificationResponse.arrayBuffer()), await readFile(resolve('public', verificationFile)), `${mode}: Search Console確認ファイルが一致しません。`);
+  // Astro dev also accepts .html aliases; only the static preview matches hosting.
+  if (mode === 'preview') {
+    for (const path of removedPages) {
+      const response = await fetch(new URL(path, origin), { redirect: 'manual', signal: AbortSignal.timeout(15_000) });
+      assert.equal(response.status, 404, `${mode}: 廃止したページURLが配信されています ${path}`);
+      await response.arrayBuffer();
+    }
+    console.log(`${mode}: 廃止した${removedPages.length}URLの404を検証しました。`);
+  }
   const images = new Map();
   for (const path of pages) {
     const response = await fetch(new URL(path, origin), { signal: AbortSignal.timeout(15_000) });
