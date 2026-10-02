@@ -17,7 +17,11 @@ const attrs = (node) => Object.fromEntries((node?.attrs ?? []).map(({ name, valu
 const meta = (nodes, key, value) => attrs(nodes.find((node) => node.tagName === 'meta' && attrs(node)[key] === value)).content;
 const output = await files(root);
 assert.ok(!output.some((file) => ['.md', '.json'].includes(extname(file))), '編集データ・取得記録が公開出力に含まれています。');
-const html = output.filter((file) => file.endsWith('.html'));
+// Search Console serves this file verbatim; it is not a portfolio page.
+const verificationFile = 'googleb12b508bf6084b36.html';
+const verificationPath = join(root, verificationFile);
+assert.deepEqual(await readFile(verificationPath), await readFile(join('public', verificationFile)), 'Search Console確認ファイルが一致しません。');
+const html = output.filter((file) => file.endsWith('.html') && file !== verificationPath);
 const allWorks = await readWorks(resolve('works'));
 assertWorkSlugs(allWorks);
 const works = allWorks.filter((work) => !work.data.draft);
