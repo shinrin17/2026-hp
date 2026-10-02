@@ -43,7 +43,7 @@ export function getImages(entry: CollectionEntry<'works'>) {
   return Promise.all(entry.data.images.map((_, index) => getImage(entry, index)));
 }
 
-// Lists and the hero need only the cover, not metadata for the whole gallery.
+// The hero needs only the cover; the list uses generated WebP thumbnails.
 export function getCoverImage(entry: CollectionEntry<'works'>) {
   return getImage(entry, 0);
 }

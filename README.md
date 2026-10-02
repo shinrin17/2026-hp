@@ -124,6 +124,15 @@ sourceLabel: 公式サイト
 
 画像はJPEG・PNG・WebP・AVIFに対応し、寸法は自動取得します。ファイル名は `01.jpg` などが扱いやすいです。`images` に登録した画像だけを公開します。先頭を変えると作品一覧の画像が変わります。SNS共有には下記の共通OGP画像を使います。本文中で画像を参照する場合も `images` に登録してください。
 
+作品一覧のサムネイルは `images` の先頭から **WebPを自動生成**します。手動追加・Instagram取り込みとも追加の書き出し作業は不要です。開発時は必要に応じて生成し、`npm run build`（`npm run verify`・公開時のビルドを含む）で公開用ファイルを生成します。
+
+- 幅400・800・1200pxを用意し、画面幅と画素密度に応じてブラウザが選びます。小さい元画像は拡大せず、重複サイズも生成しません。
+- WebP品質88で生成し、縦横比・構図・透明度を保ち、EXIFの回転を反映します。元画像・トップの代表作・作品詳細は変更しません。
+- 先頭画像の変更、同名画像の差し替え、Instagram再取得で公開Markdownの先頭画像が変わった場合は、次のビルドで反映します。取得時に保護された手修正はそのままです。
+- サムネイルは `/assets/work-thumbnails/<slug>/<内容ハッシュ>-<幅>.webp` へ出力します。画像の内容をURLに反映するため、差し替え後に古いキャッシュを使い続けません。`works/` への派生画像の保存や、Markdownへのサムネイル項目の追加は不要です。
+
+生成設定は `scripts/work-thumbnails.mjs`、一覧への適用は `src/pages/works.astro` にあります。
+
 ### 公開URLの決め方
 
 各 `index.md` の `slug` から **`/works/<slug>/`** を生成します。`.html` は表示されません。
@@ -226,7 +235,7 @@ Codex用の編集ルールは [AGENTS.md](AGENTS.md) にあります。
 - 作品URL・旧URLからの転送：`src/pages/works/[path]/index.astro` と `src/components/WorkRedirect.astro`。
 - 共通の検索/SNS情報：`src/components/SeoHead.astro`。構造化データと作品説明の生成は `src/lib/seo.ts`。
 - 作品・画像URLの生成：`src/lib/work-urls.ts` の `workHref` / `imageHref`。
-- 画像寸法の取得：`src/lib/works.ts`。一覧・代表作は `getCoverImage` で先頭だけ、詳細は `getImages` でギャラリー全体を読みます。
+- 画像寸法の取得：`src/lib/works.ts`。代表作は `getCoverImage` で先頭だけ、詳細は `getImages` でギャラリー全体を読みます。一覧のWebPサムネイルは `scripts/work-thumbnails.mjs` の `getWorkThumbnail` を使います。
 - サイトURL：`astro.config.mjs` の `site`。ドメインを変える場合は `public/CNAME` と検証スクリプトも確認します。
 
 タイトル・description・canonical・OGP・JSON-LD・サイトマップを生成します。構造化データには本人のプロフィールや作品との関係を記述し、未確認の担当業務は補完しません。
@@ -235,7 +244,7 @@ JSON-LDはトップに `WebSite`、作品一覧に `CollectionPage` / `ItemList`
 
 SNS共有用のタイトル・説明はページごとに設定し、OGPとX（Twitter）で同じ内容を使います。トップ・作品一覧は `website`、プロフィールは `profile`（姓名）、作品詳細は `article`（`publishedAt` の掲載日時、本人プロフィールへの著者リンク、カテゴリ）を出力します。作品の説明は `summary` を優先し、空欄なら作品名・記入済みの担当・カテゴリから生成します。
 
-OGP画像は全ページ共通で `public/assets/images/ichirinka-og.png` を使います。faviconと同じロゴを中央に配置した1200×630pxのPNGを、縮小・切り抜きせず横長のまま配信します。設定は `src/config/site.ts` の `socialImage` にまとめ、HTTPSの絶対URL・形式・実際の幅と高さ・代替テキストを出力します。画像を差し替えた場合は実際の寸法・形式・代替テキストも合わせて更新してください。
+OGP画像は全ページ共通で `public/assets/images/ichirinka-og.webp` を使います。faviconと同じロゴを中央に配置した1200×630pxのWebPを、縮小・切り抜きせず横長のまま配信します。設定は `src/config/site.ts` の `socialImage` にまとめ、HTTPSの絶対URL・形式・実際の幅と高さ・代替テキストを出力します。画像を差し替えた場合は実際の寸法・形式・代替テキストも合わせて更新してください。
 
 正方形の表示を優先するため、X（Twitter）は `twitter:card=summary` とし、`twitter:image`・`twitter:image:alt` も明示します。ロゴと文字は画像中央の正方形内に収めてあります。OGPには横長画像の実寸を記載し、正方形への切り抜きは各媒体に任せます。最終的な表示比率・切り抜きは各媒体の仕様で決まり、サイトから正方形表示を強制する設定はありません。作品ギャラリー・一覧サムネイル・プロフィール写真は各ページの画像を使います。
 

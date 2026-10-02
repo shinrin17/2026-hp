@@ -1,10 +1,13 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { getWorks, getCoverImage, workHref } from '../lib/works';
+import { getWorks, workHref } from '../lib/works';
+import { getWorkThumbnail } from '../../scripts/work-thumbnails.mjs';
 import { categoryLabels, siteInfo } from '../config/site';
 import { collectionData } from '../lib/seo';
 const works = await getWorks();
-const cards = await Promise.all(works.map(async (work) => ({ work, image: await getCoverImage(work) })));
+const cards = await Promise.all(works.map(async (work) => ({ work, image: await getWorkThumbnail(work.id, work.data) })));
+// Match main's 12px side margins and the grid's 2 / 3 columns with 12 / 24px gaps.
+const thumbnailSizes = '(max-width: 768px) calc((100vw - 36px) / 2), (max-width: 1224px) calc((100vw - 72px) / 3), 384px';
 ---
 <SiteLayout title={`作品一覧 | ${siteInfo.name}`} description="森川亮太が携わった写真・映像作品の一覧。アーティスト写真、MV、CM、ドラマ、メイキングなどの実績を、PHOTO・MOVIE・PRODUCTION STAFFのカテゴリ別に紹介します。" path="/works/" section="works" structuredData={collectionData(Astro.site!, works.map((work) => work.data))}>
   <h1 class="visually-hidden">作品一覧</h1>
@@ -13,7 +16,7 @@ const cards = await Promise.all(works.map(async (work) => ({ work, image: await 
   </div>
   <div id="works-results" class="works-grid">
     {cards.map(({ work, image }) => <article class="work" id={work.data.slug} data-category={work.data.categories.join(' ')} data-date={work.data.publishedAt.slice(0, 10)}>
-      <a href={workHref(work.data.slug)} aria-label={work.data.title}><img class="work-image" src={image.src} alt={image.alt} width={image.width} height={image.height} style={`aspect-ratio: ${image.width} / ${image.height}`} loading="lazy" decoding="async" /></a>
+      <a href={workHref(work.data.slug)} aria-label={work.data.title}><img class="work-image" src={image.src} srcset={image.srcset} sizes={thumbnailSizes} alt={image.alt} width={image.width} height={image.height} style={`aspect-ratio: ${image.width} / ${image.height}`} loading="lazy" decoding="async" /></a>
     </article>)}
   </div>
 </SiteLayout>

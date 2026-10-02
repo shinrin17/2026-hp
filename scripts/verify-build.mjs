@@ -2,6 +2,8 @@ import assert from 'node:assert/strict';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve, join, extname } from 'node:path';
 import { parse } from 'parse5';
+import sharp from 'sharp';
+import { getWorkThumbnail } from './work-thumbnails.mjs';
 import { readWorks } from './work-files.mjs';
 import { assertWorkSlugs } from './work-slugs.mjs';
 
@@ -25,6 +27,18 @@ const html = output.filter((file) => file.endsWith('.html') && file !== verifica
 const allWorks = await readWorks(resolve('works'));
 assertWorkSlugs(allWorks);
 const works = allWorks.filter((work) => !work.data.draft);
+const thumbnails = new Map(await Promise.all(works.map(async (work) =>
+  [work.data.slug, await getWorkThumbnail(work.folder, work.data)],
+)));
+const expectedThumbnails = [...thumbnails.values()].flatMap((thumbnail) => thumbnail.variants);
+const thumbnailFiles = output.filter((file) => file.startsWith(join(root, 'assets', 'work-thumbnails') + '/'));
+assert.deepEqual(thumbnailFiles.sort(), expectedThumbnails.map((variant) => join(root, variant.src)).sort(), 'サムネイルに不足・古い画像・下書きの画像があります。');
+for (const variant of expectedThumbnails) {
+  const metadata = await sharp(join(root, variant.src)).metadata();
+  assert.equal(metadata.format, 'webp', `サムネイル形式: ${variant.src}`);
+  assert.equal(metadata.width, variant.width, `サムネイル幅: ${variant.src}`);
+  assert.equal(metadata.height, variant.height, `サムネイル高さ: ${variant.src}`);
+}
 const expectedImagePaths = new Set(works.flatMap((work) =>
   [work.data.slug, work.folder].flatMap((path) => work.data.images.map((image) => join(root, 'works', path, image.file))),
 ));
@@ -84,6 +98,13 @@ for (const [path, nodes] of documents) {
         assert.equal(data.url, expectedCanonical, `${path}: JSON-LD URL`);
         assert.equal(data.mainEntity.numberOfItems, works.length, `${path}: 一覧件数`);
         const cards = nodes.filter((node) => node.tagName === 'article' && attrs(node).class === 'work');
+        for (const card of cards) {
+          const thumbnail = thumbnails.get(attrs(card).id);
+          const image = attrs(elements(card).find((node) => node.tagName === 'img'));
+          assert.equal(image.src, thumbnail.src, `${path}: 一覧はWebPサムネイルを使用してください。`);
+          assert.equal(image.srcset, thumbnail.srcset, `${path}: サムネイル候補が一致しません。`);
+          assert.ok(image.sizes, `${path}: サムネイルの表示サイズがありません。`);
+        }
         assert.deepEqual(data.mainEntity.itemListElement.map(({ position, name, url }) => ({ position, name, url })), cards.map((card, index) => {
           const link = attrs(elements(card).find((node) => node.tagName === 'a'));
           return { position: index + 1, name: link['aria-label'], url: new URL(link.href, origin).href };
@@ -121,4 +142,4 @@ const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => m
 assert.deepEqual(sitemapUrls.sort(), [...canonicalPaths.values()].sort(), 'サイトマップは正規URLだけを含めてください。');
 assert.match(await readFile(join(root, 'robots.txt'), 'utf8'), /Sitemap: https:\/\/m-ryohta.com\/sitemap.xml/);
 assert.equal((await readFile(join(root, 'CNAME'), 'utf8')).trim(), 'm-ryohta.com');
-console.log(`${canonicalPaths.size}ページ、${works.length}作品、旧URL転送${redirectPaths.size}件、${links}内部参照、全作品画像・構造化データ・サイトマップを検証しました。`);
+console.log(`${canonicalPaths.size}ページ、${works.length}作品、旧URL転送${redirectPaths.size}件、${links}内部参照、${expectedThumbnails.length} WebPサムネイル、全作品画像・構造化データ・サイトマップを検証しました。`);

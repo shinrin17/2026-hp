@@ -3,6 +3,8 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { dev, preview } from 'astro';
 import { parse } from 'parse5';
+import sharp from 'sharp';
+import { getWorkThumbnail } from './work-thumbnails.mjs';
 import { readWorks } from './work-files.mjs';
 
 const mode = process.argv[2];
@@ -11,6 +13,10 @@ const works = (await readWorks(resolve('works'))).filter((work) => !work.data.dr
 const pages = ['/', '/works/', '/about/', ...works.map((work) => `/works/${work.data.slug}/`)];
 const sourceRoot = resolve(mode === 'preview' ? 'dist' : 'public');
 const expectedImages = new Map();
+const expectedThumbnails = new Map((await Promise.all(works.map(async (work) => {
+  const thumbnail = await getWorkThumbnail(work.folder, work.data);
+  return thumbnail.variants.map((variant) => [variant.src, variant]);
+}))).flat());
 for (const work of works) {
   for (const image of work.data.images) {
     expectedImages.set(`/works/${work.data.slug}/${image.file}`, resolve('works', work.folder, image.file));
@@ -49,6 +55,7 @@ try {
       const attrs = Object.fromEntries((node.attrs ?? []).map(({ name, value }) => [name, value]));
       const references = [];
       if (node.tagName === 'img' && attrs.src) references.push(attrs.src);
+      if (node.tagName === 'img' && attrs.srcset) references.push(...attrs.srcset.split(',').map((candidate) => candidate.trim().split(/\s+/)[0]));
       if (node.tagName === 'meta' && attrs.property === 'og:image') references.push(attrs.content);
       if (node.tagName === 'script' && attrs.type === 'application/ld+json') {
         references.push(...structuredImages(JSON.parse(node.childNodes.map((child) => child.value ?? '').join(''))));
@@ -61,11 +68,24 @@ try {
     }
   }
   const coveredImages = new Set();
+  const coveredThumbnails = new Set();
   for (const [path, page] of images) {
     const response = await fetch(new URL(path, origin), { signal: AbortSignal.timeout(15_000) });
     assert.equal(response.status, 200, `${mode}: ${page} の画像がリンク切れ ${path}`);
     assert.match(response.headers.get('content-type') ?? '', /^image\//, `${mode}: 画像ではありません ${path}`);
     const decoded = decodeURIComponent(new URL(path, origin).pathname);
+    const thumbnail = expectedThumbnails.get(decoded);
+    if (thumbnail) {
+      assert.match(response.headers.get('content-type') ?? '', /^image\/webp\b/, `${mode}: WebPではありません ${path}`);
+      const buffer = Buffer.from(await response.arrayBuffer());
+      const metadata = await sharp(buffer).metadata();
+      assert.equal(metadata.format, 'webp', `${mode}: サムネイル形式 ${path}`);
+      assert.equal(metadata.width, thumbnail.width, `${mode}: サムネイル幅 ${path}`);
+      assert.equal(metadata.height, thumbnail.height, `${mode}: サムネイル高さ ${path}`);
+      if (mode === 'preview') assert.deepEqual(buffer, await readFile(resolve('dist', `.${decoded}`)), `${mode}: サムネイルの内容 ${path}`);
+      coveredThumbnails.add(decoded);
+      continue;
+    }
     const original = expectedImages.get(decoded);
     if (original) coveredImages.add(decoded);
     else assert.ok(decoded.startsWith('/assets/'), `${mode}: 作品画像はslug配下を参照してください ${path}`);
@@ -73,7 +93,8 @@ try {
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), await readFile(source), `${mode}: 画像の内容が一致しません ${path}`);
   }
   assert.equal(coveredImages.size, expectedImages.size, `${mode}: ページ内で参照されていない作品画像があります。`);
-  console.log(`${mode}: ${pages.length}ページ、${images.size}画像（全${expectedImages.size}作品画像・共通画像・OGP・構造化データ）のHTTP配信を検証しました。`);
+  assert.equal(coveredThumbnails.size, expectedThumbnails.size, `${mode}: サムネイル候補に不足があります。`);
+  console.log(`${mode}: ${pages.length}ページ、${images.size}画像（全${expectedImages.size}作品画像・${coveredThumbnails.size} WebPサムネイル・共通画像・OGP・構造化データ）のHTTP配信を検証しました。`);
 } finally {
   await server.stop();
 }

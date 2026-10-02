@@ -5,10 +5,10 @@ export const siteInfo = {
   sameAs: ['https://www.instagram.com/m_ichirinka/', 'https://www.youtube.com/@tokyoshutters'],
   // Keep the supplied landscape artwork intact; its logo fits a centered square crop.
   socialImage: {
-    path: '/assets/images/ichirinka-og.png',
+    path: '/assets/images/ichirinka-og.webp',
     width: 1200,
     height: 630,
-    type: 'image/png',
+    type: 'image/webp',
     alt: '白地に黒い花瓶のシンボルと「ICHIRINKA」の文字を配したロゴ',
   },
 };

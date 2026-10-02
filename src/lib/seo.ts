@@ -48,7 +48,7 @@ export function profileData(site: URL) {
       jobTitle: ['フォトグラファー', '映像ディレクター'],
       url: site.href,
       sameAs: siteInfo.sameAs,
-      image: new URL('/assets/images/about-portrait.jpeg', site).href,
+      image: new URL('/assets/images/about-portrait.webp', site).href,
     },
   };
 }
