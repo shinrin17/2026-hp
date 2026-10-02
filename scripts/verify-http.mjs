@@ -34,6 +34,12 @@ const server = await start({
 try {
   const port = mode === 'dev' ? server.address.port : server.port;
   const origin = `http://127.0.0.1:${port}`;
+  const verificationFile = 'googleb12b508bf6084b36.html';
+  const verificationResponse = await fetch(new URL(`/${verificationFile}`, origin), {
+    redirect: 'manual', signal: AbortSignal.timeout(15_000),
+  });
+  assert.equal(verificationResponse.status, 200, `${mode}: Search Console確認ファイル取得失敗`);
+  assert.deepEqual(Buffer.from(await verificationResponse.arrayBuffer()), await readFile(resolve('public', verificationFile)), `${mode}: Search Console確認ファイルが一致しません。`);
   const images = new Map();
   for (const path of pages) {
     const response = await fetch(new URL(path, origin), { signal: AbortSignal.timeout(15_000) });
