@@ -75,7 +75,7 @@ dd { margin: 0; }
 .profile { min-width: 0; }
 .profile h3 { margin-top: 24px; }
 .profile h3:first-child { margin-top: 0; }
-.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; margin-top: 80px; padding-block: 24px 8px; font-size: 11px; color: #666; }
+.footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-block: 24px 8px; font-size: 11px; color: #666; }
 @media (min-width: 769px) {
   .about-profile { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .about-portrait { order: 1; }
@@ -83,7 +83,6 @@ dd { margin: 0; }
 @media (max-width: 768px) {
   .hero-image { aspect-ratio: var(--hero-image-ratio); }
   .works-grid { --works-columns: 2; --works-gap: 12px; }
-  .footer { margin-top: 56px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
