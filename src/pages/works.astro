@@ -12,7 +12,7 @@ const thumbnailSizes = '(max-width: 768px) calc((100vw - 36px) / 2), (max-width:
 <SiteLayout title={`作品一覧 | ${siteInfo.name}`} description="森川亮太が携わった写真・映像作品の一覧。アーティスト写真、MV、CM、ドラマ、メイキングなどの実績を、PHOTO・MOVIE・PRODUCTION STAFFのカテゴリ別に紹介します。" path="/works/" section="works" structuredData={collectionData(Astro.site!, works.map((work) => work.data))}>
   <h1 class="visually-hidden">作品一覧</h1>
   <div class="role-nav works-filters" role="group" aria-label="作品のカテゴリで絞り込み">
-    {Object.entries({ all: 'ALL', ...categoryLabels }).map(([category, label]) => <button type="button" data-filter={category} aria-pressed={category === 'all' ? 'true' : 'false'} aria-controls="works-results">{label}</button>)}
+    {Object.entries({ all: 'ALL', ...categoryLabels }).map(([category, label]) => <button type="button" id={category === 'photo' ? 'photo' : undefined} data-filter={category} aria-pressed={category === 'all' ? 'true' : 'false'} aria-controls="works-results">{label}</button>)}
   </div>
   <div id="works-results" class="works-grid">
     {cards.map(({ work, image }) => <article class="work" id={work.data.slug} data-category={work.data.categories.join(' ')} data-date={work.data.publishedAt.slice(0, 10)}>
