@@ -23,9 +23,9 @@ const ogPrefix = `og: https://ogp.me/ns#${type === 'website' ? '' : ` ${type}: h
         <img src="/assets/images/ichirinka-header.webp" alt="ICHIRINKA" width="2043" height="175" />
       </a>
       <nav aria-label="メインナビゲーション">
+        <a href="/works/" aria-current={section === 'works' ? 'page' : undefined}>WORKS</a>
         <a href="/philosophy/" aria-current={section === 'philosophy' ? 'page' : undefined}>PHILOSOPHY</a>
         <a href="/about/" aria-current={section === 'about' ? 'page' : undefined}>ABOUT</a>
-        <a href="/works/" aria-current={section === 'works' ? 'page' : undefined}>WORKS</a>
       </nav>
     </header>
     <main id="main" transition:name="page-content" transition:animate={fade({ duration: '300ms' })}><slot /></main>

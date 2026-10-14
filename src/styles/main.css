@@ -31,14 +31,17 @@ main { flex: 1; }
 .philosophy h1 { margin: 0; font-weight: 500; letter-spacing: .12em; line-height: 1.8; }
 .philosophy h1 span { display: block; }
 .philosophy .home-tagline { font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif; font-weight: 400; letter-spacing: .1em; line-height: 1.7; text-wrap: balance; }
+.copy-phrase { display: inline-block; white-space: nowrap; }
+.philosophy .home-tagline .copy-phrase { display: inline-block; }
 .philosophy-page h1 { letter-spacing: .16em; }
 .philosophy-copy { max-width: 720px; margin: 40px auto 0; font-size: clamp(14px, 1.6vw, 17px); letter-spacing: .08em; line-height: 2.4; word-spacing: .2em; text-wrap: balance; }
 .philosophy-copy p { margin-bottom: 28px; }
 .philosophy-copy p:last-child { margin-bottom: 0; }
 .hero { width: min(840px, 100%); margin-top: 48px; margin-inline: auto; }
 .hero-slides { display: grid; }
-.hero-slide { grid-area: 1 / 1; min-width: 0; opacity: 0; visibility: hidden; pointer-events: none; text-decoration: none; transition: opacity 1.2s ease-in-out, visibility 0s 1.2s; }
-.hero-slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.hero-slide { grid-area: 1 / 1; min-width: 0; opacity: 0; visibility: hidden; pointer-events: none; text-decoration: none; transition: opacity .6s ease-in-out, visibility 0s .6s; }
+/* Fade out before the next photo and caption appear in the shared grid cell. */
+.hero-slide.is-active { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .6s ease-in-out .6s, visibility 0s; }
 .hero-slide:hover { opacity: 1; }
 .hero-slide figure { margin: 0; }
 .hero-image { aspect-ratio: 16 / 10; }
@@ -51,6 +54,7 @@ main { flex: 1; }
 .hero-pagination button::before, .hero-pagination button::after { content: ""; position: absolute; inset: 15px 0 auto; height: 2px; background: #ddd; }
 .hero-pagination button::after { background: #191919; transform: scaleX(var(--progress, 0)); transform-origin: left; }
 .hero-controls button:focus-visible { outline: 2px solid #191919; outline-offset: 3px; }
+.photography-link { margin: 24px 0 48px; text-align: center; font-size: 13px; letter-spacing: .06em; }
 .role-nav { display: flex; flex-wrap: wrap; gap: 16px 28px; padding-block: 28px; font-size: 11px; letter-spacing: .08em; }
 .works-filters { justify-content: flex-end; gap: 12px; padding-block: 12px; }
 .works-filters button { appearance: none; border: 0; border-bottom: 1px solid transparent; border-radius: 0; padding: 0; background: transparent; color: #666; font: inherit; letter-spacing: inherit; cursor: pointer; }
@@ -83,6 +87,9 @@ dd { margin: 0; }
 .about-link { display: block; width: fit-content; text-decoration: none; }
 .about-link-label { text-decoration: underline; }
 .profile { min-width: 0; }
+.profile-contact { margin-block: 24px; }
+.profile-contact h2 { margin-bottom: 8px; font-size: 14px; font-weight: 400; letter-spacing: .06em; }
+.profile-contact a { overflow-wrap: anywhere; }
 .profile h3 { margin-top: 24px; }
 .profile h3:first-child { margin-top: 0; }
 .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-block: 24px 8px; font-size: 11px; color: #666; }
@@ -134,4 +141,5 @@ dd { margin: 0; }
   .header { gap: 12px; flex-wrap: wrap; }
   .header nav { flex-wrap: wrap; font-size: 11px; }
   .philosophy { padding-block: 36px 28px; }
+  .philosophy .home-tagline .copy-phrase { display: block; }
 }
