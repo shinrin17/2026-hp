@@ -12,7 +12,7 @@ import { workHref, imageHref } from '../src/lib/work-urls.ts';
 const mode = process.argv[2];
 assert.ok(['dev', 'preview'].includes(mode), '使い方: node scripts/verify-http.mjs dev|preview');
 const works = (await readWorks(resolve('works'))).filter((work) => !work.data.draft);
-const pages = ['/', '/works/', '/about/', ...works.map((work) => workHref(work.data.slug))];
+const pages = ['/', '/works/', '/about/', '/philosophy/', ...works.map((work) => workHref(work.data.slug))];
 const removedPages = ['/about.html', '/works.html', ...works
   .filter((work) => work.folder !== work.data.slug)
   .flatMap((work) => [`/works/${encodeURIComponent(work.folder)}/`, `/works/${encodeURIComponent(work.folder)}/index.html`])];

@@ -60,6 +60,7 @@ assert.deepEqual(publishedImages.sort(), [...expectedImagePaths].sort(), '作品
 const canonicalPaths = new Map([
   [join(root, 'index.html'), `${origin}/`],
   [join(root, 'about', 'index.html'), `${origin}/about/`],
+  [join(root, 'philosophy', 'index.html'), `${origin}/philosophy/`],
   [join(root, 'works', 'index.html'), `${origin}/works/`],
   ...works.map((work) => [join(root, 'works', work.data.slug, 'index.html'), new URL(workHref(work.data.slug), origin).href]),
 ]);
@@ -142,7 +143,7 @@ for (const [path, nodes] of documents) {
         return { position: index + 1, name: link['aria-label'], url: new URL(link.href, origin).href };
       }), `${path}: JSON-LDと表示作品の順序・名前・URL`);
     } else {
-      assert.equal(data['@type'], base.pathname === '/about/' ? 'ProfilePage' : 'WebSite', `${path}: ページ種別`);
+      assert.equal(data['@type'], base.pathname === '/about/' ? 'ProfilePage' : base.pathname === '/philosophy/' ? 'WebPage' : 'WebSite', `${path}: ページ種別`);
       assert.equal(data.url, expectedCanonical, `${path}: JSON-LD URL`);
     }
   }
