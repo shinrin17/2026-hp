@@ -4,6 +4,10 @@ import Hero from '../components/Hero.astro';
 import { siteInfo } from '../config/site';
 ---
 <SiteLayout title={`${siteInfo.name} | 写真・映像ポートフォリオ`} path="/" section="home">
-  <h1 class="home-statement">表現者の持つ熱量と尊さを残すクリエイター</h1>
+  <section class="philosophy" aria-labelledby="philosophy-title">
+    <p class="philosophy-name">RYOHTA MORIKAWA</p>
+    <p class="philosophy-role">Photographer</p>
+    <h1 id="philosophy-title" class="home-tagline">その人と、世界のあいだ。</h1>
+  </section>
   <Hero />
 </SiteLayout>

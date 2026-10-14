@@ -1,0 +1,15 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { siteInfo } from '../config/site';
+const structuredData = { '@context': 'https://schema.org', '@type': 'WebPage', name: 'PHILOSOPHY', url: new URL('/philosophy/', Astro.site!).href, about: { '@id': new URL('/about/#person', Astro.site!).href } };
+---
+<SiteLayout title={`PHILOSOPHY | ${siteInfo.name}`} description="人を知る。人とつながる。人をつなぐ。森川亮太の写真・映像・制作への想い。" path="/philosophy/" section="philosophy" structuredData={structuredData}>
+  <section class="philosophy philosophy-page" aria-labelledby="philosophy-title">
+      <h1 id="philosophy-title"><span>人を知る</span><span>人とつながる</span><span>人をつなぐ</span></h1>
+      <div class="philosophy-copy">
+        <p>撮影の前に その人を知る<br>現場で同じ時間を過ごし 関係を築く<br>写真や映像を通して その人を誰かにつなぐ</p>
+        <p>必要であればカメラを置き 制作として人と人をつなぐ</p>
+        <p>写真 映像 制作<br>手段は違っても やっていることは変わらない</p>
+      </div>
+    </section>
+</SiteLayout>

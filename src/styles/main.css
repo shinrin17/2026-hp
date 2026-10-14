@@ -1,6 +1,6 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 24px; }
-body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; margin: 0; background: #fff; color: #191919; font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; font-size: 14px; line-height: 1.8; }
+body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; margin: 0; background: #fff; color: #191919; font-family: "Avenir Next", Avenir, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Helvetica Neue", sans-serif; font-size: 14px; line-height: 1.8; }
 a { color: inherit; text-underline-offset: 5px; }
 a:hover { opacity: .7; }
 a:focus-visible { outline: 2px solid #191919; outline-offset: 5px; }
@@ -24,7 +24,17 @@ main { flex: 1; }
 .skip-link { position: absolute; top: 8px; left: 8px; padding: 8px 16px; background: #fff; z-index: 2; transform: translateY(-160%); }
 .skip-link:focus { transform: none; }
 .eyebrow { color: #666; font-size: 11px; letter-spacing: .1em; }
-.home-statement { margin: 0; font-size: 11px; font-weight: 400; letter-spacing: .08em; line-height: 1.8; text-align: left; }
+.philosophy { padding-block: 56px 40px; text-align: center; }
+.philosophy .philosophy-name { margin-bottom: 8px; font-size: clamp(16px, 2vw, 22px); letter-spacing: .14em; }
+.philosophy .philosophy-role { margin-bottom: 32px; font-size: clamp(12px, 1.6vw, 18px); letter-spacing: .06em; text-wrap: balance; }
+.philosophy strong { font-weight: 600; }
+.philosophy h1 { margin: 0; font-weight: 500; letter-spacing: .12em; line-height: 1.8; }
+.philosophy h1 span { display: block; }
+.philosophy .home-tagline { font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif; font-weight: 400; letter-spacing: .1em; line-height: 1.7; text-wrap: balance; }
+.philosophy-page h1 { letter-spacing: .16em; }
+.philosophy-copy { max-width: 720px; margin: 40px auto 0; font-size: clamp(14px, 1.6vw, 17px); letter-spacing: .08em; line-height: 2.4; word-spacing: .2em; text-wrap: balance; }
+.philosophy-copy p { margin-bottom: 28px; }
+.philosophy-copy p:last-child { margin-bottom: 0; }
 .hero { width: min(840px, 100%); margin-top: 48px; margin-inline: auto; }
 .hero-slides { display: grid; }
 .hero-slide { grid-area: 1 / 1; min-width: 0; opacity: 0; visibility: hidden; pointer-events: none; text-decoration: none; transition: opacity 1.2s ease-in-out, visibility 0s 1.2s; }
@@ -119,3 +129,9 @@ dd { margin: 0; }
 .project-facts > div { display: flex; }
 .project-facts dt { flex-shrink: 0; font-weight: 400; }
 .profile h1 { font-size: clamp(18px, 3vw, 24px); line-height: 1.8; }
+
+@media (max-width: 600px) {
+  .header { gap: 12px; flex-wrap: wrap; }
+  .header nav { flex-wrap: wrap; font-size: 11px; }
+  .philosophy { padding-block: 36px 28px; }
+}
