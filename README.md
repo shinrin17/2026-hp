@@ -22,6 +22,7 @@ src/
   pages/
     index.astro        ← トップページ
     about.astro        ← プロフィール・お問い合わせ
+    philosophy.astro   ← 写真・映像・制作への想い
     works.astro        ← 作品一覧
     works/[path]/index.astro  ← slugの公開URL
   components/works/
@@ -234,6 +235,7 @@ Codex用の編集ルールは [AGENTS.md](AGENTS.md) にあります。
 
 - トップの代表作：`src/config/site.ts` の `featuredWorkIds` を、作品の `workId` で指定します。配列順がスライド順です。
 - プロフィール・連絡先：`src/pages/about.astro`。
+- 写真・映像・制作への想い：`src/pages/philosophy.astro`（公開URLは `/philosophy/`）。
 - 作品詳細の並び・構成：`src/components/works/WorkPage.astro` と同じフォルダの各部品。
 - 作品URL：`src/pages/works/[path]/index.astro`。
 - 共通の検索/SNS情報：`src/components/SeoHead.astro`。構造化データと作品説明の生成は `src/lib/seo.ts`。
@@ -261,7 +263,7 @@ OGP画像は全ページ共通で `public/assets/images/ichirinka-og.webp` を�
 
 作品詳細は `/works/<slug>/` の正規URLだけを生成します。作品フォルダ名とslugが異なる場合の旧 `/works/<作品フォルダ>/index.html` と `/works/<作品フォルダ>/` は廃止し、転送HTMLを生成しません。サイトマップには正規URLのみを載せます。
 
-固定ページも、トップ `/`・プロフィール `/about/`・作品一覧 `/works/` に統一しています。ヘッダーや「WORKS」も末尾 `/` のURLを使います。旧 `/about.html`・`/works.html` は廃止し、転送HTMLを生成しません。トップの `/index.html` は `/` と同じファイルで、正規URLは `/` です。
+固定ページも、トップ `/`・プロフィール `/about/`・作品一覧 `/works/`・想い `/philosophy/` に統一しています。ヘッダーや「WORKS」も末尾 `/` のURLを使います。旧 `/about.html`・`/works.html` は廃止し、転送HTMLを生成しません。トップの `/index.html` は `/` と同じファイルで、正規URLは `/` です。
 
 ページ内の画像は `/works/<slug>/img/<ファイル名>` を参照します。作品フォルダ名に `&`・`:`・`#` が含まれていても、開発サーバー・公開プレビューで同じURLから表示できます。画像の編集場所は引き続き `works/<作品名>/img/` です。旧画像URLも公開出力に残しています。`#` を含む既存作品名は専用の読み込み処理とビルド完了処理で対応しています。
 

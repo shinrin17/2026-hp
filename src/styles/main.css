@@ -16,23 +16,20 @@ main { flex: 1; }
 ::view-transition-group(page-content) { animation: none; }
 ::view-transition-new(page-content) { animation-delay: 300ms; animation-fill-mode: both; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 12px 0; }
-.brand { display: block; min-width: 0; text-decoration: none; }
-.brand img { width: auto; height: 20px; object-fit: contain; object-position: left center; }
+.brand { display: block; min-width: 0; font-size: clamp(14px, 3.6vw, 20px); font-weight: 500; line-height: 1.1; letter-spacing: .08em; text-decoration: none; white-space: nowrap; }
 .header nav { display: flex; flex-shrink: 0; gap: 12px; font-size: 12px; letter-spacing: .1em; }
 .header nav a { text-decoration: none; }
 .header nav a[aria-current] { text-decoration: underline; }
+.header nav .nav-label-short { display: none; }
 .skip-link { position: absolute; top: 8px; left: 8px; padding: 8px 16px; background: #fff; z-index: 2; transform: translateY(-160%); }
 .skip-link:focus { transform: none; }
 .eyebrow { color: #666; font-size: 11px; letter-spacing: .1em; }
+.home-statement { margin: 0; font-size: 11px; font-weight: 400; letter-spacing: .08em; line-height: 1.8; text-align: left; }
 .philosophy { padding-block: 56px 40px; text-align: center; }
-.philosophy .philosophy-name { margin-bottom: 8px; font-size: clamp(16px, 2vw, 22px); letter-spacing: .14em; }
-.philosophy .philosophy-role { margin-bottom: 32px; font-size: clamp(12px, 1.6vw, 18px); letter-spacing: .06em; text-wrap: balance; }
 .philosophy strong { font-weight: 600; }
 .philosophy h1 { margin: 0; font-weight: 500; letter-spacing: .12em; line-height: 1.8; }
 .philosophy h1 span { display: block; }
-.philosophy .home-tagline { font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif; font-weight: 400; letter-spacing: .1em; line-height: 1.7; text-wrap: balance; }
 .copy-phrase { display: inline-block; white-space: nowrap; }
-.philosophy .home-tagline .copy-phrase { display: inline-block; }
 .philosophy-page h1 { letter-spacing: .16em; }
 .philosophy-copy { max-width: 720px; margin: 40px auto 0; font-size: clamp(14px, 1.6vw, 17px); letter-spacing: .08em; line-height: 2.4; word-spacing: .2em; text-wrap: balance; }
 .philosophy-copy p { margin-bottom: 28px; }
@@ -54,7 +51,6 @@ main { flex: 1; }
 .hero-pagination button::before, .hero-pagination button::after { content: ""; position: absolute; inset: 15px 0 auto; height: 2px; background: #ddd; }
 .hero-pagination button::after { background: #191919; transform: scaleX(var(--progress, 0)); transform-origin: left; }
 .hero-controls button:focus-visible { outline: 2px solid #191919; outline-offset: 3px; }
-.photography-link { margin: 24px 0 48px; text-align: center; font-size: 13px; letter-spacing: .06em; }
 .role-nav { display: flex; flex-wrap: wrap; gap: 16px 28px; padding-block: 28px; font-size: 11px; letter-spacing: .08em; }
 .works-filters { justify-content: flex-end; gap: 12px; padding-block: 12px; }
 .works-filters button { appearance: none; border: 0; border-bottom: 1px solid transparent; border-radius: 0; padding: 0; background: transparent; color: #666; font: inherit; letter-spacing: inherit; cursor: pointer; }
@@ -135,11 +131,13 @@ dd { margin: 0; }
 .project-facts { font-size: 13px; }
 .project-facts > div { display: flex; }
 .project-facts dt { flex-shrink: 0; font-weight: 400; }
-.profile h1 { font-size: clamp(18px, 3vw, 24px); line-height: 1.8; }
+.profile h1 { font-size: clamp(18px, 3vw, 24px); }
+.profile h1, .profile .eyebrow { margin-bottom: 0; }
 
 @media (max-width: 600px) {
   .header { gap: 12px; flex-wrap: wrap; }
   .header nav { flex-wrap: wrap; font-size: 11px; }
+  .header nav .nav-label-full { display: none; }
+  .header nav .nav-label-short { display: inline; }
   .philosophy { padding-block: 36px 28px; }
-  .philosophy .home-tagline .copy-phrase { display: block; }
 }

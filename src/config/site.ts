@@ -1,5 +1,5 @@
 export const siteInfo = {
-  name: 'ICHIRINKA – MORIKAWA RYOHTA',
+  name: 'RYOHTA MORIKAWA',
   description: 'フォトグラファー・映像ディレクター、森川亮太のポートフォリオ。写真撮影・映像演出・制作進行を通じて、表現者の持つ熱量と尊さを残します。芸能分野の人物撮影、メイキング・ドキュメンタリーなどの作品を紹介。',
   personName: '森川亮太',
   sameAs: ['https://www.instagram.com/m_ichirinka/', 'https://www.youtube.com/@tokyoshutters'],
