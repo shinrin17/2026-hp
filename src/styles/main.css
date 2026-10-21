@@ -10,11 +10,17 @@ h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 500; letter-spacing: .08em;
 h2 { font-size: clamp(18px, 3vw, 24px); font-weight: 500; letter-spacing: .08em; }
 h3 { font-size: 16px; font-weight: 500; }
 .header, main, .footer { width: min(1200px, 100% - 24px); margin-inline: auto; }
-main { flex: 1; }
-/* Native view transitions run both snapshots together: wait for the 300ms
-   fade-out before fading in. Astro's fallback already runs them in sequence. */
+main { flex: 1; view-transition-name: page-content; }
+/* Cross-document transitions work with CSP, without ClientRouter script injection.
+   Browsers without this API use ordinary page navigation. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { display: none; }
+::view-transition-group(root), ::view-transition-new(root) { animation: none; }
 ::view-transition-group(page-content) { animation: none; }
-::view-transition-new(page-content) { animation-delay: 300ms; animation-fill-mode: both; }
+::view-transition-old(page-content) { animation: page-fade-out 300ms ease both; }
+::view-transition-new(page-content) { animation: page-fade-in 300ms ease 300ms both; }
+@keyframes page-fade-out { to { opacity: 0; } }
+@keyframes page-fade-in { from { opacity: 0; } }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-block: 12px 0; }
 .brand { display: block; min-width: 0; font-size: clamp(14px, 3.6vw, 20px); font-weight: 500; line-height: 1.1; letter-spacing: .08em; text-decoration: none; white-space: nowrap; }
 .header nav { display: flex; flex-shrink: 0; gap: 12px; font-size: 12px; letter-spacing: .1em; }
@@ -98,6 +104,7 @@ dd { margin: 0; }
   .works-grid { --works-columns: 2; --works-gap: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
   html { scroll-behavior: auto; }
   .hero-slide { transition: none; }
   .works-grid.is-revealing .work-image.is-visible { animation: none; }

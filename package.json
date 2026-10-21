@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --test tests/*.test.mjs",
+    "audit": "npm audit --audit-level=moderate",
     "verify": "npm run check && npm test && npm run build && node scripts/verify-build.mjs && npm run verify:http",
     "verify:http": "node scripts/verify-http.mjs dev && node scripts/verify-http.mjs preview",
     "import:instagram": "node scripts/import-instagram.mjs",

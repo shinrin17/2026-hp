@@ -3,8 +3,6 @@ function initWorksFilter() {
   const works = document.querySelectorAll('#works-results .work');
   const grid = document.getElementById('works-results');
   if (!grid) return;
-  const controller = new AbortController();
-  const { signal } = controller;
 
   const cards = Array.from(works, (work) => {
     const image = work.querySelector('img');
@@ -57,8 +55,8 @@ function initWorksFilter() {
     }
   });
   gridObserver.observe(grid);
-  window.addEventListener('resize', scheduleLayout, { signal });
-  window.addEventListener('pageshow', scheduleLayout, { signal });
+  window.addEventListener('resize', scheduleLayout);
+  window.addEventListener('pageshow', scheduleLayout);
 
   function filterWorks(category) {
     activeCategory = category;
@@ -74,7 +72,7 @@ function initWorksFilter() {
   }
 
   filters.forEach((button) => {
-    button.addEventListener('click', () => filterWorks(button.dataset.filter), { signal });
+    button.addEventListener('click', () => filterWorks(button.dataset.filter));
   });
 
   // Keep category links from the home page and links to individual works usable.
@@ -102,7 +100,7 @@ function initWorksFilter() {
     }
   }
 
-  window.addEventListener('hashchange', revealLinkedWork, { signal });
+  window.addEventListener('hashchange', revealLinkedWork);
 
   filterWorks('all');
   revealLinkedWork();
@@ -132,24 +130,18 @@ function initWorksFilter() {
     async function prepareImage() {
       // A failed image must still expose its alt text and keep its reserved space.
       try { await image.decode(); } catch { /* Load errors also become visible. */ }
-      if (signal.aborted) return;
       readyImages.add(image);
       revealImage(image);
     }
     if (image.complete) {
       void prepareImage();
     } else {
-      image.addEventListener('load', prepareImage, { once: true, signal });
-      image.addEventListener('error', prepareImage, { once: true, signal });
+      image.addEventListener('load', prepareImage, { once: true });
+      image.addEventListener('error', prepareImage, { once: true });
     }
     revealObserver.observe(image);
   });
-  document.addEventListener('astro:before-swap', () => {
-    controller.abort();
-    cancelAnimationFrame(layoutFrame);
-    gridObserver.disconnect();
-    revealObserver.disconnect();
-  }, { once: true, signal });
 }
 
-document.addEventListener('astro:page-load', initWorksFilter);
+// A restored page keeps its filter and listeners in the browser's back/forward cache.
+initWorksFilter();

@@ -8,6 +8,7 @@ import { assertWorkSlugs } from './work-slugs.mjs';
 import { getWorkThumbnail, getWorkHeroImage } from './work-thumbnails.mjs';
 import { categoryLabels, featuredWorkIds, siteInfo } from '../src/config/site.ts';
 import { workHref, imageHref } from '../src/lib/work-urls.ts';
+import { verifyCsp } from './verify-csp.mjs';
 
 const root = resolve('dist');
 const origin = 'https://m-ryohta.com';
@@ -78,6 +79,7 @@ for (const [index, image] of heroNodes.entries()) {
 }
 let links = 0;
 for (const [path, nodes] of documents) {
+  verifyCsp(nodes, path);
   const expectedCanonical = canonicalPaths.get(path);
   assert.ok(expectedCanonical, `想定外のページ: ${path}`);
   const base = new URL(expectedCanonical);
@@ -177,4 +179,4 @@ const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => m
 assert.deepEqual(sitemapUrls.sort(), [...canonicalPaths.values()].sort(), 'サイトマップは正規URLだけを含めてください。');
 assert.match(await readFile(join(root, 'robots.txt'), 'utf8'), /Sitemap: https:\/\/m-ryohta.com\/sitemap.xml/);
 assert.equal((await readFile(join(root, 'CNAME'), 'utf8')).trim(), 'm-ryohta.com');
-console.log(`${canonicalPaths.size}ページ、${works.length}作品、${links}内部参照、${expectedThumbnails.length} WebPサムネイル、全作品画像・構造化データ・サイトマップを検証しました。`);
+console.log(`${canonicalPaths.size}ページ、${works.length}作品、${links}内部参照、${expectedThumbnails.length} WebPサムネイル、全作品画像・構造化データ・サイトマップ・CSPを検証しました。`);

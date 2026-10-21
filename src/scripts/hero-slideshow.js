@@ -1,8 +1,6 @@
 function initHeroSlideshow() {
   const hero = document.querySelector('.hero');
   if (!hero) return;
-  const controller = new AbortController();
-  const { signal } = controller;
 
   const slides = Array.from(hero.querySelectorAll('.hero-slide'));
   const controls = hero.querySelector('.hero-controls');
@@ -64,21 +62,17 @@ function initHeroSlideshow() {
     button.addEventListener('click', () => {
       showSlide(Number(button.dataset.slide));
       scheduleSlide();
-    }, { signal });
+    });
   });
-  document.addEventListener('visibilitychange', scheduleSlide, { signal });
+  document.addEventListener('visibilitychange', scheduleSlide);
   motionPreference.addEventListener('change', () => {
     paused = motionPreference.matches;
     scheduleSlide();
-  }, { signal });
-
-  document.addEventListener('astro:before-swap', () => {
-    controller.abort();
-    window.cancelAnimationFrame(frame);
-  }, { once: true, signal });
+  });
 
   controls.hidden = false;
   scheduleSlide();
 }
 
-document.addEventListener('astro:page-load', initHeroSlideshow);
+// Module scripts run after parsing on each full-page navigation, including CSP.
+initHeroSlideshow();

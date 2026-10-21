@@ -60,6 +60,7 @@ npm run dev
 
 ```bash
 npm run verify    # 型・内容、回帰テスト、ビルド、全内部リンク・画像、開発・公開プレビューのHTTP配信を検証
+npm run audit     # 開発用を含む依存パッケージを監査。moderate以上で失敗
 npm run preview   # 公開する dist/ をプレビュー
 ```
 
@@ -260,6 +261,20 @@ OGP画像は全ページ共通で `public/assets/images/ichirinka-og.webp` を�
 1. GitHubの **Settings → Pages → Build and deployment → Source** を **GitHub Actions** に設定します。
 2. 独自ドメイン `m-ryohta.com` の設定を維持します。
 3. 変更を `main` にpushすると検証・ビルド・公開が実行されます。PRでは検証だけ実行します。
+
+依存監査は `.github/workflows/dependency-audit.yml` にまとめています。mainへのpush・PRでは公開ワークフローから呼び出し、監査に合格してからビルドへ進みます。毎週月曜09:17（日本時間）と手動実行でも監査できるため、ソースの変更がない期間も新しい脆弱性を確認します。監査ではlockfile通りに `npm ci --ignore-scripts` で依存を用意し、開発用を含めてmoderate以上の警告や通信失敗をエラーにします。
+
+`.github/dependabot.yml` はnpmとGitHub Actionsの更新PRを毎週作成します。Actionsの外部参照は確認済みコミットの完全なSHAで固定し、対応するバージョンをコメントに残します。週次監査とDependabotは設定がmainへ反映されてから有効になります。
+
+### Content Security Policy（CSP）
+
+`astro.config.mjs` の `security.csp` で、公開HTMLのheadにCSPを生成します。スクリプト・スタイルは同一サイトとビルドで計算したハッシュに制限し、外部リソース、インラインイベント、フォーム送信、base要素によるURLの差し替えを禁止します。写真の比率と配置に使う `style` 属性だけに `unsafe-inline` を許可し、スクリプトには許可しません。
+
+AstroのClientRouterはCSP非対応のため、画面遷移にはブラウザ標準のView Transitionsを使います。初回描画前に遷移の設定が適用されるよう、共通CSSはCSPハッシュ付きでHTMLに埋め込みます。対応ブラウザでは本文のフェードを保ち、未対応ブラウザでは通常のページ遷移になります。動きを減らすOS設定ではフェードを止めます。
+
+`npm run verify` は全公開ページのCSP配置とスクリプト・スタイルのハッシュも検証します。CSPは開発サーバーでは有効にならないため、操作時の確認は `npm run build` 後の `npm run preview` で行ってください。GitHub Pages上ではmetaによる適用のため、HTTPヘッダー専用の `frame-ancestors` は設定していません。
+
+### 公開URLと配信の検証
 
 作品詳細は `/works/<slug>/` の正規URLだけを生成します。作品フォルダ名とslugが異なる場合の旧 `/works/<作品フォルダ>/index.html` と `/works/<作品フォルダ>/` は廃止し、転送HTMLを生成しません。サイトマップには正規URLのみを載せます。
 
