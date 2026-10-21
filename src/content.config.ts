@@ -18,6 +18,11 @@ const works = defineCollection({
     client: z.string().default(''),
     source: z.url({ protocol: /^https?$/ }).optional(),
     sourceLabel: z.string().optional(),
+    // Optional TOP-only image; the list thumbnail and gallery keep images order.
+    heroImage: z.object({
+      file: z.string().regex(/^img\/[^/\\]+\.(?:jpg|jpeg|png|webp|avif)$/i),
+      alt: z.string().optional(),
+    }).optional(),
     images: z.array(z.object({
       file: z.string().regex(/^img\/[^/\\]+\.(?:jpg|jpeg|png|webp|avif)$/i),
       alt: z.string().optional(),

@@ -43,8 +43,9 @@ export function getWorkThumbnail(folder, data, root = resolve('works')) {
 }
 
 export function getWorkHeroImage(folder, data, root = resolve('works')) {
-  // Reuse list URLs, adding enough pixels for the 840px hero at 2x / 3x density.
-  return responsiveWorkImage(folder, data, root, [...widths, 1680, 2520], 1200);
+  // Reuse list URLs by default, while allowing a separately supplied TOP photo.
+  const heroData = data.heroImage ? { ...data, images: [data.heroImage] } : data;
+  return responsiveWorkImage(folder, heroData, root, [...widths, 1680, 2520], 1200);
 }
 
 export async function renderWorkThumbnail(sourcePath, width) {

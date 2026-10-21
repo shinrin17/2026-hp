@@ -19,9 +19,9 @@ const removedPages = ['/about.html', '/works.html', ...works
 const sourceRoot = resolve(mode === 'preview' ? 'dist' : 'public');
 const expectedImages = new Map();
 const expectedThumbnails = new Map((await Promise.all(works.map(async (work) => {
-  const getImage = featuredWorkIds.includes(work.data.workId) ? getWorkHeroImage : getWorkThumbnail;
-  const thumbnail = await getImage(work.folder, work.data);
-  return thumbnail.variants.map((variant) => [variant.src, variant]);
+  const images = [await getWorkThumbnail(work.folder, work.data)];
+  if (featuredWorkIds.includes(work.data.workId)) images.push(await getWorkHeroImage(work.folder, work.data));
+  return images.flatMap((image) => image.variants.map((variant) => [variant.src, variant]));
 }))).flat());
 for (const work of works) {
   for (const image of work.data.images) {

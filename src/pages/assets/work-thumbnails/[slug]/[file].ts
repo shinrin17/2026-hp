@@ -8,11 +8,12 @@ import { featuredWorkIds } from '../../../../config/site';
 export const getStaticPaths: GetStaticPaths = async () => {
   const works = await getWorks();
   const paths = await Promise.all(works.map(async (work) => {
-    const getImage = featuredWorkIds.includes(work.data.workId) ? getWorkHeroImage : getWorkThumbnail;
-    const thumbnail = await getImage(work.id, work.data);
-    return thumbnail.variants.map((variant) => ({
+    const images = [await getWorkThumbnail(work.id, work.data)];
+    if (featuredWorkIds.includes(work.data.workId)) images.push(await getWorkHeroImage(work.id, work.data));
+    const variants = images.flatMap((image) => image.variants.map((variant) => ({ ...variant, sourcePath: image.sourcePath })));
+    return [...new Map(variants.map((variant) => [variant.src, variant])).values()].map((variant) => ({
       params: { slug: work.data.slug, file: variant.file },
-      props: { sourcePath: thumbnail.sourcePath, width: variant.width },
+      props: { sourcePath: variant.sourcePath, width: variant.width },
     }));
   }));
   return paths.flat();

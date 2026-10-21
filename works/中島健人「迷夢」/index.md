@@ -13,6 +13,10 @@ draft: false
 summary: 中島健人「迷夢」のミュージックビデオで、スチール撮影を担当しました。
 role: MVスチール撮影
 client: ""
+# TOP専用：一覧サムネイル・詳細ギャラリーの写真は変更しません。
+heroImage:
+  file: img/top.jpg
+  alt: 「迷夢」のMVスチール。霧のかかった森で木に手を添える中島健人と、白い「迷夢」の文字。
 # ③ ギャラリー：並び順＝表示順。先頭が一覧サムネイル。alt / caption も追加できます。
 images:
   - file: img/01.jpg

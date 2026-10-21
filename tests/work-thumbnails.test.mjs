@@ -38,6 +38,27 @@ test('トップは一覧のWebPを共用し、高精細画面向けだけ追加�
   assert.equal(metadata.height, 1260);
 });
 
+test('TOP専用写真を使っても一覧サムネイルとギャラリーの画像順を維持する', async (t) => {
+  const root = await fixture(t);
+  const folder = 'TOP差し替え';
+  const worksRoot = join(root, 'works');
+  const imageDir = join(worksRoot, folder, 'img');
+  await mkdir(imageDir, { recursive: true });
+  await sourceImage(1440, 1440).jpeg().toFile(join(imageDir, '01.jpg'));
+  await sourceImage(1292, 856, '#668844').jpeg().toFile(join(imageDir, 'top.jpg'));
+  const data = { slug: 'hero-override', title: '作品', images: [{ file: 'img/01.jpg', alt: '一覧用' }] };
+  const before = await getWorkThumbnail(folder, data, worksRoot);
+  const withHero = { ...data, heroImage: { file: 'img/top.jpg', alt: '黒枠のないTOP写真' } };
+  const hero = await getWorkHeroImage(folder, withHero, worksRoot);
+  assert.deepEqual(await getWorkThumbnail(folder, withHero, worksRoot), before);
+  assert.deepEqual(withHero.images, [{ file: 'img/01.jpg', alt: '一覧用' }]);
+  assert.notEqual(hero.src, before.src);
+  assert.equal(hero.alt, '黒枠のないTOP写真');
+  const rendered = await sharp(await renderWorkThumbnail(hero.sourcePath, 1292)).metadata();
+  assert.equal(rendered.width, 1292);
+  assert.equal(rendered.height, 856);
+});
+
 test('手動追加の先頭からWebPを生成し、並び替え・同名画像の更新でURLが変わる', async (t) => {
   const root = await fixture(t);
   const markdown = await newWork('写真 #1 & 作品', { root, slug: 'manual-thumbnail' });

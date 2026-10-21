@@ -15,9 +15,9 @@ export const siteInfo = {
 
 // Top-page order. Use the workId from each work's index.md.
 export const featuredWorkIds = [
-  'instagram-C_QJO0fJ_Z3',
-  'instagram-DYMbnz-CX-M',
-  'instagram-DZkZ7EkCSRh',
+  'instagram-DIGdKSfvMCa',
+  'instagram-C_0JuwxPuDm',
+  'instagram-DAvY_OHvmhy',
 ];
 
 export const categoryLabels = {
