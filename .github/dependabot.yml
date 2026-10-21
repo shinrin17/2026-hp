@@ -8,6 +8,11 @@ updates:
       time: '09:00'
       timezone: Asia/Tokyo
     open-pull-requests-limit: 5
+    ignore:
+      # @astrojs/check currently supports TypeScript 5 and 6 only.
+      # Revisit when its peerDependencies support TypeScript 7 or later.
+      - dependency-name: typescript
+        versions: ['>=7.0.0']
     groups:
       compatible-updates:
         update-types: [minor, patch]

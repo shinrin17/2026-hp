@@ -266,6 +266,8 @@ OGP画像は全ページ共通で `public/assets/images/ichirinka-og.webp` を�
 
 `.github/dependabot.yml` はnpmとGitHub Actionsの更新PRを毎週作成します。Actionsの外部参照は確認済みコミットの完全なSHAで固定し、対応するバージョンをコメントに残します。週次監査とDependabotは設定がmainへ反映されてから有効になります。
 
+TypeScript 7以降への自動更新は、`@astrojs/check` の対応範囲が5系・6系のため保留しています。型チェックツールの `peerDependencies.typescript` が7以降に対応したら、Dependabotの該当 `ignore` を見直し、`npm ci`・`npm run audit`・`npm run verify` の成功を確認して更新してください。対応範囲内の更新と依存監査は継続します。
+
 ### Content Security Policy（CSP）
 
 `astro.config.mjs` の `security.csp` で、公開HTMLのheadにCSPを生成します。スクリプト・スタイルは同一サイトとビルドで計算したハッシュに制限し、外部リソース、インラインイベント、フォーム送信、base要素によるURLの差し替えを禁止します。写真の比率と配置に使う `style` 属性だけに `unsafe-inline` を許可し、スクリプトには許可しません。
