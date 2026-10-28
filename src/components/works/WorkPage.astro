@@ -24,7 +24,7 @@ const structuredData = workData(Astro.site!, data, images);
     <WorkHeading work={work} />
     <div class="project-detail">
       <WorkGallery images={images} />
-      <WorkDescription summary={data.summary} source={data.source} sourceLabel={data.sourceLabel}><Content /></WorkDescription>
+      <WorkDescription source={data.source} sourceLabel={data.sourceLabel}><Content /></WorkDescription>
     </div>
   </article>
 </SiteLayout>
