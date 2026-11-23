@@ -18,15 +18,15 @@
     "new:work": "node scripts/new-work.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.7",
-    "astro": "^7.4.7",
+    "@astrojs/markdown-satteri": "^0.4.10",
+    "astro": "^7.4.13",
     "sharp": "^0.35.5",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@types/node": "^26.6.6",
-    "parse5": "^8.1.0",
+    "parse5": "^8.1.1",
     "typescript": "^5.9.0"
   }
 }
